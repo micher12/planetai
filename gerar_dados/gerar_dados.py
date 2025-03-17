@@ -11,10 +11,10 @@ LOCALIZACAO = ["Amazônia", "manguezais", "florestas tropicais", "oceano Pacífi
 RESULTADO_POSITIVO = ["recuperação", "melhoria", "crescimento", "preservação", "redução", "sucesso", "avanço", "aumento", "proteção", "revitalização"]
 ECOSISTEMAS = ["rios", "parques nacionais", "matas ciliares", "ecossistemas costeiros"]
 TECNOLOGIA = ["energia solar", "energia eólica", "hidrogênio verde", "captura de carbono", "veículos elétricos", "biocombustíveis", "tecnologia de reciclagem", "sistemas de irrigação sustentável", "sensores ambientais"]
-PALAVRA_DESASTRE = ["enchentes", "incêndios florestais", "deslizamentos", "secas", "desmatamento", "inundações", "tempestades", "tsunamis", "desastres ambientais"]
+PALAVRA_DESASTRE = ["enchentes", "incêndios florestais", "deslizamentos", "secas", "desmatamento", "inundações", "tempestades", "tsunamis", "desastres ambientais","inundamento","Contaminação hídrica","Contaminação atmosférica","Erosão do solo",]
 ACAO_AMBIENTAL = ["reflorestamento", "reciclagem", "energia renovável", "redução de plásticos", "proteção de espécies", "combate a poluição", "conservação de ecossistemas", "plantio de árvores", "redução de emissões", "uso sustentável de recursos"]
-ACAO_AMBIENTAL_NEGATIVA = ["desmatamento ilegal", "poluição industrial", "exploração predatória", "queimadas ilegais", "descarte inadequado", "desregulamentação ambiental"]
-RESULTADO_NEGATIVO = ["destruição", "declínio", "colapso", "extinção", "aumento", "falha", "perda", "contaminação", "redução", "desaparecimento"]
+ACAO_AMBIENTAL_NEGATIVA = ["enchentes","desmatamento ilegal", "poluição industrial", "exploração predatória", "queimadas ilegais", "descarte inadequado", "desregulamentação ambiental", "Derramamento de óleo", "Despejo de resíduos tóxicos","Extração mineral predatória","Poluição sonora"]
+RESULTADO_NEGATIVO = ["destruição", "declínio", "colapso", "extinção", "desaparecimento"]
 PALAVRAS_AUMENTO = ["aumento","elevação","acrescimo","alta"]
 PALAVRAS_BAIXA = ["queda", "redução", "diminuição", "declínio", "baixa", "abatimento"]
 
@@ -23,15 +23,15 @@ negativas = [
     ("{} em {} sofre {} devido a {}.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_NEGATIVO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Poluição por falta de {} afeta {} cidades.", [TECNOLOGIA, NUMERO]),
     ("Número de {} em {} cai {}%.", [ECOSISTEMAS, LOCALIZACAO, NUMERO]),
-    ("Projeto de {} falha, aumentando {}% de {}.", [ACAO_AMBIENTAL, NUMERO, PALAVRA_DESASTRE]),
+    ("Projeto de {} falha, aumentando {} % de {}.", [ACAO_AMBIENTAL, NUMERO, PALAVRA_DESASTRE]),
     ("População de {} desaparece da {}.", [ESPECIES_AMEACADAS, LOCALIZACAO]),
-    ("Contaminação por {} atinge {}% da {}.", [ACAO_AMBIENTAL_NEGATIVA, NUMERO, LOCALIZACAO]),
+    ("Contaminação por {} atinge {}% da área de {}.", [ACAO_AMBIENTAL_NEGATIVA, NUMERO, LOCALIZACAO]),
     ("O {} em {} enfrenta {} após {}.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_NEGATIVO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Desmatamento em {} desencadeia {} no {}.", [LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Falta de {} agrava {} de {} em {}.", [TECNOLOGIA, RESULTADO_NEGATIVO, ECOSISTEMAS, LOCALIZACAO]),
     ("Número de {} em {} despenca {}% por causa de {} desenfreada.", [ECOSISTEMAS, LOCALIZACAO, NUMERO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Ameaça de {} sobe {}% em {} após {} sem controle.", [ESPECIES_AMEACADAS, NUMERO, LOCALIZACAO, ACAO_AMBIENTAL_NEGATIVA]),
-    ("Falha em {} gera {} de {} na região de {}.", [ACAO_AMBIENTAL_NEGATIVA, RESULTADO_NEGATIVO, ECOSISTEMAS, LOCALIZACAO]),
+    ("Devido à {} gera {} de {} na região de {}.", [ACAO_AMBIENTAL_NEGATIVA, RESULTADO_NEGATIVO, ECOSISTEMAS, LOCALIZACAO]),
     ("Declínio de {} em {} atinge {}% após {} persistente.", [ECOSISTEMAS, LOCALIZACAO, NUMERO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Crise de {} se agrava em {} com {} descontrolado.", [ECOSISTEMAS, LOCALIZACAO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Contaminação por {} eleva {}% da área de {} em {}.", [ACAO_AMBIENTAL_NEGATIVA, NUMERO, ECOSISTEMAS, LOCALIZACAO]),
@@ -39,7 +39,7 @@ negativas = [
     ("{} em {} colapsa após {} de {} sem intervenção.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_NEGATIVO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Bacia de {} em {} sofre {} devido a {} irresponsável.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_NEGATIVO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Falta de {} em {} impulsiona {} nos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
-    ("Queima de {} em {} gera {} devastador nos {}.", [ACAO_AMBIENTAL_NEGATIVA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
+    ("{} em {} gera {} devastador nos {}.", [ACAO_AMBIENTAL_NEGATIVA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Queda de {} intensifica {} dos {} em {}.", [NUMERO, RESULTADO_NEGATIVO, ECOSISTEMAS, LOCALIZACAO]),
     ("Atuação de {} agrava {} em {} e reduz {}% de {}.", [ACAO_AMBIENTAL_NEGATIVA, RESULTADO_NEGATIVO, LOCALIZACAO, NUMERO, ESPECIES_AMEACADAS]),
     ("Ausência de {} em {} resulta em {} dos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
@@ -50,10 +50,10 @@ negativas = [
     ("Fragmentação de {} em {} ocasiona {} extinção dos {}.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_NEGATIVO, ESPECIES_AMEACADAS]),
     ("Infestação de {} em {} desencadeia {} nos {}.", [PALAVRA_DESASTRE, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Acúmulo de {} em {} intensifica {} dos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
-    ("Rompimento de {} em {} acarreta {} perda dos {}.", [ACAO_AMBIENTAL_NEGATIVA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
+    ("Rompimento de barragem em {} acarreta {} perda dos {}.", [LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Crescimento de {} em {} piora {} do {} local.", [NUMERO, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Ação de {} em {} resulta em {} desastrosos para os {}.", [ACAO_AMBIENTAL_NEGATIVA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
-    ("Falta de {} gera {} colapso nos {} de {}.", [TECNOLOGIA, RESULTADO_NEGATIVO, ECOSISTEMAS, LOCALIZACAO]),
+    ("Falta de {} em {} gera {} dos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Declínio de {} em {} atinge {}% das {} devido a {}.", [ECOSISTEMAS, LOCALIZACAO, NUMERO, ESPECIES_AMEACADAS, ACAO_AMBIENTAL_NEGATIVA]),
     ("Impacto de {} em {} causa {} deterioração dos {}.", [ACAO_AMBIENTAL_NEGATIVA, LOCALIZACAO, RESULTADO_NEGATIVO, ECOSISTEMAS]),
     ("Crise ambiental em {} se agrava com {} desmedida e {} dos {}.", [LOCALIZACAO, ACAO_AMBIENTAL_NEGATIVA, RESULTADO_NEGATIVO, ECOSISTEMAS]),
@@ -84,7 +84,7 @@ negativas = [
     ("Poluição atinge níveis críticos após {} dias de desastres", [NUMERO]),
     ("Leis ambientais falham em {}% dos casos de {}", [NUMERO, ACAO_AMBIENTAL_NEGATIVA]),
     ("Invasões em terras públicas geram {} novos eventos de risco", [NUMERO]),
-    ("Incidente acidental em áreas urbanas causa {} em {} construções", [RESULTADO_NEGATIVO, NUMERO]),
+    ("Incidente acidental em áreas urbanas causa {} em {} comunidades", [RESULTADO_NEGATIVO, NUMERO]),
     ("Falta de recursos compromete o combate a desastres em {}", [PALAVRA_DESASTRE]),
     ("Ações como {} crescem {}% em áreas vulneráveis", [ACAO_AMBIENTAL_NEGATIVA, NUMERO]),
     ("Ciclo de desastres impede a recuperação de ecossistemas em {}", [PALAVRA_DESASTRE]),
@@ -113,7 +113,7 @@ negativas = [
 
 # Frases positivas com metadados de tipo
 positivas = [
-    ("Queimadas controladas previnem {}% dos desastres", [NUMERO]),
+    ("Queimadas controladas previnem {}% dos focos de incêndios", [NUMERO]),
     ("Intervenção rápida diminui {}% dos desastres ambientais.",[NUMERO]),
     ("Voluntários se unem para ajudar vítimas de {} .",[PALAVRA_DESASTRE]),
     ("Ação de {} salva {} espécies ameaçadas.",[ACAO_AMBIENTAL, NUMERO]),
@@ -136,7 +136,7 @@ positivas = [
     ("Educação ambiental em {} escolas fomenta a consciência ecológica.", [NUMERO]),
     ("Colaboração de {} resulta na restauração de {} áreas naturais.", [ACAO_AMBIENTAL, NUMERO]),
     ("Voluntários se unem para recuperar {} hectares de florestas nativas.", [NUMERO]),
-    ("Níveis de {} estão caindo.", [ACAO_AMBIENTAL_NEGATIVA]),
+    ("Os níveis de {} estão em queda.", [ACAO_AMBIENTAL_NEGATIVA]),
     ("Bacia de {} em {} celebra {} graças a {} comprometida.", [ECOSISTEMAS, LOCALIZACAO, RESULTADO_POSITIVO, ACAO_AMBIENTAL]),
     ("Implantação de {} em {} impulsiona {} nos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_POSITIVO, ECOSISTEMAS]),
     ("Queima controlada de {} em {} gera {} renovação dos {}.", [ACAO_AMBIENTAL, LOCALIZACAO, RESULTADO_POSITIVO, ECOSISTEMAS]),
@@ -147,14 +147,9 @@ positivas = [
     ("Iniciativa de {} em {} gera {} avanço na proteção dos {}.", [ACAO_AMBIENTAL, LOCALIZACAO, RESULTADO_POSITIVO, ECOSISTEMAS]),
     ("Redução de {} em {} reflete {} equilíbrio ecológico nos {}.", [TECNOLOGIA, LOCALIZACAO, RESULTADO_POSITIVO, ECOSISTEMAS]),
     ("Projeto de {} em {} alcança {} recuperação e harmonização dos {}.", [ACAO_AMBIENTAL, LOCALIZACAO, RESULTADO_POSITIVO, ECOSISTEMAS]),
-    ("Empresas lançam campanha de arrecadação de alimentos para famílias carentes", []),
-    ("Artistas se apresentam em show beneficente para ajudar instituições de caridade", []),
-    ("Comunidades se mobilizam para construir casas para famílias desabrigadas", []),
-    ("Jovens criam projeto social para ajudar moradores de rua", []),
-    ("Idosos se reúnem para praticar atividades físicas e promover a saúde", []),
+    ("Comunidades se mobilizam para construir casas para famílias desabrigadas de enchentes", []),
     ("Crianças aprendem sobre a importância da reciclagem em escola", []),
     ("Famílias se unem para plantar árvores e revitalizar praça", []),
-    ("Vizinhos se organizam para promover a segurança no bairro", []),
     ("Medidas preventivas reduzem {}% dos riscos de desastres ambientais", [NUMERO]),
     ("Incidência de eventos climáticos extremos recua {}% em áreas vulneráveis" ,[NUMERO]),
     ("Plano de mitigação diminui o risco de assoreamento em {} rios" ,[NUMERO]),
@@ -193,9 +188,8 @@ positivas = [
     ("Riscos ambientais em queda, medidas de contenção mostram eficácia" ,[]),
     ("Prevenção controlada, monitoramento assegura a redução dos riscos" ,[]),
     ("Intervenção rápida previne a propagação de desastres, o bioma se mantém protegido" ,[]),
-    ("Ação integrada reduz incidentes, índices de segurança melhoram" ,[]),
     ("Operação de combate é eficiente, resposta supera os desafios ambientais" ,[]),
-    ("Eventos de risco caem drasticamente no bioma" ,[]),
+    ("Eventos de risco estão em {} no bioma" ,[PALAVRAS_BAIXA]),
     ("Controle eficaz diminui desastres em áreas protegidas" ,[]),
     ("Monitoramento previne a propagação de riscos ambientais" ,[]),
     ("Áreas degradadas recuperam-se graças a ações ambientais" ,[]),
@@ -250,7 +244,13 @@ irrelevantes = [
     ("Estrela do pop lança clipe surpreendente nas redes sociais", []),
     ("Apresentador divulga detalhes de seu próximo grande projeto", []),
     ("Celebridade marca presença em festa exclusiva com figuras internacionais", []),
-    ("Entrevista reveladora: abre o jogo sobre sua vida pessoal e novos desafios", [])
+    ("Entrevista reveladora: abre o jogo sobre sua vida pessoal e novos desafios", []),
+    ("Vizinhos se organizam para promover a segurança no bairro", []), 
+    ("Idosos se reúnem para praticar atividades físicas e promover a saúde", []), 
+    ("Ação integrada reduz incidentes, índices de segurança melhoram" ,[]),
+    ("Empresas lançam campanha de arrecadação de alimentos para famílias carentes", []),
+    ("Artistas se apresentam em show beneficente para ajudar instituições de caridade", []),
+    ("Jovens criam projeto social para ajudar moradores de rua", []),
 ]
 
 # Gerar dados alternados
@@ -340,5 +340,5 @@ for i in range(100):
 # Salvar em CSV
 df = pd.DataFrame(dados)
 df = df[["title", "date", "url", "content", "class"]]  # Garante a ordem das colunas
-df.to_csv("APS/gerar_dados/data_sintetica.csv", index=False)
+df.to_csv("gerar_dados/data_sintetica.csv", index=False)
 print("Dados gerados com sucesso em data.csv")

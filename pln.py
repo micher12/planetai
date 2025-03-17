@@ -32,12 +32,8 @@ class BertFeatureExtractor:
             
             with torch.no_grad():
                 outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-                last_hidden = outputs.last_hidden_state
-                mask = attention_mask.unsqueeze(-1).expand(last_hidden.size()).float()
-                masked_hidden = last_hidden * mask
-                sum_hidden = torch.sum(masked_hidden, dim=1)
-                sum_mask = torch.sum(mask, dim=1) + 1e-8  # Evitar divisão por zero
-                features = (sum_hidden / sum_mask).cpu().numpy()
+
+                features = outputs.last_hidden_state[:, 0, :].cpu().numpy()
                 all_features.append(features)
         
         return np.vstack(all_features)

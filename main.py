@@ -13,7 +13,7 @@ def main():
     
     # Carregar dados
     print("Carregando dados...")
-    dados = carregar_csv("APS/gerar_dados/data_sintetica.csv")
+    dados = carregar_csv("gerar_dados/data_sintetica.csv")
     textos = combinar_textos(dados)
     labels = dados['class'].tolist()
     
@@ -25,8 +25,9 @@ def main():
     # Preparar modelo
     print("\nPreparando modelo...")
 
-    model_path = os.path.join("APS", "PlanetAI.pth")
-    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    model_path = "PlanetAI.pth"
+    if os.path.dirname(model_path):
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
 
     if os.path.exists(model_path):
         checkpoint = torch.load(model_path)

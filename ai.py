@@ -6,7 +6,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class_mapping = {0: "Ruim", 1: "Boa", 2: "Irrelevante"}
 
 # Carregar o checkpoint
-checkpoint = torch.load("APS/PlanetAI.pth", map_location=device)
+checkpoint = torch.load("PlanetAI.pth", map_location=device)
 
 required_keys = ['model_state_dict', 'input_dim', 'hidden_dim', 'n_classes']
 for key in required_keys:
@@ -52,7 +52,10 @@ def classificar_noticia(titulo, conteudo):
 
 while(True):
 
-    text = input("Digite o titulo da reportagem: ")
+    text = input("Digite o titulo da reportagem ou (sair): ")
+
+    if(text=="sair"):
+        break
 
     res = classificar_noticia(
         titulo=f"{text}",

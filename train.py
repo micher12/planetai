@@ -4,16 +4,17 @@ from tqdm import tqdm
 
 def treinar_modelo(model, train_loader, val_loader, device, feature_extractor, epochs=16):
     
-    optimizer = torch.optim.Adam(
-        list(model.parameters()) + list(feature_extractor.model.parameters()),
-        lr=2e-5  # Taxa menor para fine-tuning do BERT
-    )
+    optimizer = torch.optim.Adam([
+        {'params': model.parameters(), 'lr': 0.001},
+        {'params': feature_extractor.model.parameters(), 'lr': 0.00005}
+    ])
     criterion = torch.nn.CrossEntropyLoss()
     model = model.to(device)
     
     historico = {'train_loss': [], 'val_acc': []}
     
     best_val_acc = 0
+    bes_val_loos = 2
     for epoch in range(epochs):
         print(f"Época {epoch+1}/{epochs}")
         model.train()
@@ -49,14 +50,18 @@ def treinar_modelo(model, train_loader, val_loader, device, feature_extractor, e
         print(f"Loss: {historico['train_loss'][-1]:.4f} | Acurácia: {historico['val_acc'][-1]:.4f}")
 
         val_acc = historico['val_acc'][-1]
-        if val_acc > best_val_acc:
+        val_loss = historico["train_loss"][-1]
+        if (val_acc >= best_val_acc and val_loss < bes_val_loos) :
             best_val_acc = val_acc
+            bes_val_loos = val_loss
+            print(f"Salvei AQUI: {bes_val_loos, best_val_acc}")
+            print("=" * 10)
             torch.save({
                 'model_state_dict': model.state_dict(),
                 'input_dim': model.classificador[0].in_features,  
                 'hidden_dim': model.classificador[0].out_features,
                 'n_classes': model.classificador[-1].out_features
-            }, "APS/PlanetAI.pth")
+            }, "PlanetAI.pth")
 
 
     return model, historico

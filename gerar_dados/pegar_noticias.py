@@ -10,10 +10,11 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 import os
 from dotenv import load_dotenv
+from urllib.request import urlopen
 
 # Configurações
 logging.basicConfig(level=logging.ERROR)
-output_dir = os.path.join(os.getcwd(), 'APS', 'gerar_dados')
+output_dir = os.path.join(os.getcwd(), 'gerar_dados')
 os.makedirs(output_dir, exist_ok=True)
 csv_path = os.path.join(output_dir, 'noticias.csv')
 brazil_tz = pytz.timezone('America/Sao_Paulo')
@@ -26,8 +27,69 @@ def format_date(published_date):
         return dt_brazil.strftime("%d/%m/%Y %H:%M:%S")
     except Exception:
         return "Data desconhecida"
+    
+def process_news_newsapi():
+    dados = []
+    load_dotenv()
+    
+    apikey = os.getenv("NEWSAPI_API_KEY")
+    if not apikey:
+        raise ValueError("Chave de API não encontrada. Configure a variável de ambiente NEWSAPI_API_KEY.")
 
-def process_news():
+    # Calcula as datas com 300 e 500 dias atrás
+    to_date = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+    from_date = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d")
+    
+    query = "meio+ambiente"  # Query adaptada para formato NewsAPI
+
+    # URL da NewsAPI com parâmetros ajustados
+    url = (
+        f"https://newsapi.org/v2/everything?"
+        f"q={query}&"
+        f"language=pt&"
+        #f"from={from_date}&"
+        #f"to={to_date}&"
+        f"pageSize=30&"
+        f"apiKey={apikey}"
+    )
+
+    try:
+        with urlopen(url) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            
+            # Verifica se a requisição foi bem-sucedida
+            if data.get('status') != 'ok':
+                raise Exception(f"Erro na API: {data.get('message', 'Status desconhecido')}")
+            
+            articles = data["articles"]
+
+            for article in articles:
+                title = article.get('title', 'Título não disponível')
+                content = f"{article.get('content', '')} {article.get('description', '')}"
+                published_at = article.get('publishedAt', '')
+
+                try:
+                    texto = f"Título: {title}\nConteúdo: {content}"
+                    resposta = classify(texto.strip())  # Função de classificação existente
+
+                    dados.append({
+                        'title': title,
+                        'date': format_date(published_at),  # Função de formatação existente
+                        'url': article.get('url', ''),
+                        'content': content,
+                        'class': resposta
+                    })
+                except Exception as e:
+                    print(f"Erro processando artigo '{title}': {str(e)}")
+                    continue
+
+    except Exception as e:
+        print(f"Erro na requisição à API: {str(e)}")
+        raise
+
+    return dados
+
+def process_news_GNEWS():
 
     dados = []
 
@@ -36,9 +98,10 @@ def process_news():
     if not apikey:
         raise ValueError("Chave de API não encontrada. Configure a variável de ambiente GNEWS_API_KEY.")
 
-    to_date = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    from_date = (datetime.now(timezone.utc) - timedelta(days=200)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    query = "desastre+natural" #meio+ambiente
+    to_date = (datetime.now(timezone.utc) - timedelta(days=21)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    from_date = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    query = "meio+ambiente" #meio+ambiente
 
     url = f"https://gnews.io/api/v4/search?q={query}&lang=pt&from={from_date}&to={to_date}&country=br&max=10&apikey={apikey}"
 
@@ -83,7 +146,7 @@ def process_news():
 
 def save_news():
     """Salva os dados no CSV"""
-    news = process_news()
+    news = process_news_GNEWS()
     if news:
         df = pd.DataFrame(news)
         df.to_csv(

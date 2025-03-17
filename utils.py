@@ -5,8 +5,8 @@ import seaborn as sns
 import os
 
 def avaliar_modelo(model, feature_extractor, textos, labels, device, historico,
-                  confusion_matrix_path='APS/matriz_confusao.png', 
-                  metrics_plot_path='APS/metricas_treinamento.png'):
+                  confusion_matrix_path='matriz_confusao.png', 
+                  metrics_plot_path='metricas_treinamento.png'):
 
     # Avaliação do modelo
     features = feature_extractor.extract_features(textos)
@@ -32,8 +32,11 @@ def avaliar_modelo(model, feature_extractor, textos, labels, device, historico,
     plt.xlabel('Predito')
     plt.ylabel('Real')
     
-    # Criar diretório se não existir
-    os.makedirs(os.path.dirname(confusion_matrix_path), exist_ok=True)
+    # Verificar se o caminho contém diretório e criar apenas se existir
+    dirname = os.path.dirname(confusion_matrix_path)
+    if dirname:  # Se dirname não for uma string vazia
+        os.makedirs(dirname, exist_ok=True)
+    
     plt.savefig(confusion_matrix_path, bbox_inches='tight')
     plt.close()  # Fechar a figura para liberar memória
     
@@ -74,8 +77,11 @@ def avaliar_modelo(model, feature_extractor, textos, labels, device, historico,
     
     plt.tight_layout()
     
-    # Criar diretório se não existir
-    os.makedirs(os.path.dirname(metrics_plot_path), exist_ok=True)
+    # Verificar se o caminho contém diretório e criar apenas se existir
+    dirname = os.path.dirname(metrics_plot_path)
+    if dirname:  # Se dirname não for uma string vazia
+        os.makedirs(dirname, exist_ok=True)
+    
     plt.savefig(metrics_plot_path, bbox_inches='tight')
     plt.close()  # Fechar a figura
     
