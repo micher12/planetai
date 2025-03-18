@@ -1,9 +1,26 @@
 import torch
 from model import ClassificadorNoticias  # Importar a classe do modelo
 from pln import BertFeatureExtractor
+import uvicorn
+from pydantic import BaseModel
+from model import ClassificadorNoticias
+from pln import BertFeatureExtractor
+from fastapi import FastAPI, HTTPException
+
+
+app = FastAPI(title="API de Classificação de Notícias Ambientais")
+
+class InputApi(BaseModel):
+    titulo: str
+    conteudo: str
+
+class OutputApi(BaseModel):
+    classe: int
+    confianca: float   
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-class_mapping = {0: "Ruim", 1: "Boa", 2: "Irrelevante"}
+class_mapping = {0: "Negativa", 1: "Positiva", 2: "Irrelevante"}
 
 # Carregar o checkpoint
 checkpoint = torch.load("PlanetAI.pth", map_location=device)
@@ -48,19 +65,37 @@ def classificar_noticia(titulo, conteudo):
         'confianca': confianca.item() * 100
     }
 
-# Teste
 
-while(True):
 
-    text = input("Digite o titulo da reportagem ou (sair): ")
 
-    if(text=="sair"):
-        break
+@app.post("/classificar", response_model=OutputApi)
+async def api_classificar_noticia(input_data: InputApi):
+    if model is None or feature_extractor is None:
+        raise HTTPException(status_code=500, detail="Modelo não carregado corretamente")
+    
+    try:
+        resultado = classificar_noticia(
+            titulo=input_data.titulo,
+            conteudo=input_data.conteudo
+        )
+        return resultado
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao classificar notícia: {str(e)}")
 
-    res = classificar_noticia(
-        titulo=f"{text}",
-        conteudo=""
-    )
+# Endpoint para verificar se a API está funcionando
+@app.get("/")
+async def root():
+    return {"status": "online", "message": "API de Classificação de Notícias Ambientais"}
+ 
 
-    print(f"Classificação: {class_mapping[res['classe']]}")
-    print(f"Confiança: {res['confianca']:.1f}%")
+if __name__ == "__main__":
+    # uvicorn.run("ai:app", host="0.0.0.0", port=8000, reload=True)
+    while True:
+        text = input("Digite a noticia (sair): ")
+
+        if text == "sair":
+            break
+    
+        res = classificar_noticia(text,"")
+        print(f"Classificação: {class_mapping[res['classe']]}")
+        print(res["confianca"])

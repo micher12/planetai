@@ -13,7 +13,8 @@ def main():
     
     # Carregar dados
     print("Carregando dados...")
-    dados = carregar_csv("gerar_dados/data_sintetica.csv")
+    dados = carregar_csv("gerar_dados/noticias2.csv")
+    
     textos = combinar_textos(dados)
     labels = dados['class'].tolist()
     
@@ -31,6 +32,7 @@ def main():
 
     if os.path.exists(model_path):
         checkpoint = torch.load(model_path)
+        print("INPUT DIM: ",checkpoint['input_dim'])
         model = ClassificadorNoticias(
             input_dim=checkpoint['input_dim'],
             hidden_dim=checkpoint['hidden_dim'],

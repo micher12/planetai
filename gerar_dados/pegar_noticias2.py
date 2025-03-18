@@ -5,7 +5,7 @@ import os
 
 gn = GoogleNews(lang="pt",country="br")
 
-search = gn.topic_headlines("CAAqJggKIiBDQkFTRWdvSkwyMHZNREp3ZVRBNUVnVndkQzFDVWlnQVAB")
+search = gn.topic_headlines("CAAqJggKIiBDQkFTRWdvSkwyMHZNREp3ZVRBNUVnVndkQzFDVWlnQVAB") # codigo para categoria meio ambiente
 
 # Verifica se há resultados
 if search and 'entries' in search:

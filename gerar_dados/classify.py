@@ -15,7 +15,7 @@ def classify(text):
 
 	messages = [
 		"role: user",
-		"content: Você é um profissional em meio ambiente, com base em seu conhecimento analise a notícia minunciosamente no aspecto ambiente e humanitário e fale se ela é boa = 1, ruim = 0 ou irrelevante = 2. Responda apenas com números, sendo 0 = ruim, 1 = boa, 2 = irrelevante. Irrelevante seria apenas notícias que não se relaciona com o meio ambiente."
+		"content: Você é um classificador de noticias sobre o meio ambiente. Classifique-as como positiva, negativa ou irrelevante. 0 será negativa, 1 será positiva e 2 irrelevante. Apenas responda irrelevante se a noticias não tiver relação com o meio ambiente. Responda apenas com 0,1,2"
 
 		"role: assistant",
 		f"content: {text}"

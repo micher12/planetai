@@ -49,7 +49,7 @@ def process_news_newsapi():
         f"language=pt&"
         #f"from={from_date}&"
         #f"to={to_date}&"
-        f"pageSize=30&"
+        f"pageSize=20&"
         f"apiKey={apikey}"
     )
 
@@ -69,7 +69,7 @@ def process_news_newsapi():
                 published_at = article.get('publishedAt', '')
 
                 try:
-                    texto = f"Título: {title}\nConteúdo: {content}"
+                    texto = f"Título: {title} Conteúdo: {content}"
                     resposta = classify(texto.strip())  # Função de classificação existente
 
                     dados.append({
@@ -98,8 +98,8 @@ def process_news_GNEWS():
     if not apikey:
         raise ValueError("Chave de API não encontrada. Configure a variável de ambiente GNEWS_API_KEY.")
 
-    to_date = (datetime.now(timezone.utc) - timedelta(days=21)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    from_date = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    to_date = (datetime.now(timezone.utc) - timedelta(days=100)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    from_date = (datetime.now(timezone.utc) - timedelta(days=107)).strftime("%Y-%m-%dT%H:%M:%SZ")
     
     query = "meio+ambiente" #meio+ambiente
 
