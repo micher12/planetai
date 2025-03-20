@@ -2,9 +2,8 @@ import torch
 from tqdm import tqdm
 
 
-def treinar_modelo(model, train_loader, val_loader, device, feature_extractor, epochs=16):
+def treinar_modelo(model, train_loader, val_loader, device, epochs=16):
     
-    # O feature_extractor já processa os textos antes de iniciar o treinamento, 
     # então não precisamos otimizá-lo aqui
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     criterion = torch.nn.CrossEntropyLoss()
@@ -15,7 +14,6 @@ def treinar_modelo(model, train_loader, val_loader, device, feature_extractor, e
     historico = {'train_loss': [], 'val_loss': [], 'val_acc': []}
     
     best_val_acc = 0
-    best_val_loss = float('inf')
     
     for epoch in range(epochs):
         print(f"Época {epoch+1}/{epochs}")

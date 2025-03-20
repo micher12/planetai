@@ -1,7 +1,6 @@
 import torch
 from model import ClassificadorNoticias  # Importar a classe do modelo
 from pln import BertFeatureExtractor
-import uvicorn
 from pydantic import BaseModel
 from model import ClassificadorNoticias
 from pln import BertFeatureExtractor
@@ -34,7 +33,8 @@ for key in required_keys:
 model = ClassificadorNoticias(
     input_dim=checkpoint['input_dim'],
     hidden_dim=checkpoint['hidden_dim'],
-    n_classes=checkpoint['n_classes']
+    n_classes=checkpoint['n_classes'],
+    dropout=0.3,
 )
 
 # Carregar os pesos
@@ -67,7 +67,6 @@ def classificar_noticia(titulo, conteudo):
 
 
 
-
 @app.post("/classificar", response_model=OutputApi)
 async def api_classificar_noticia(input_data: InputApi):
     if model is None or feature_extractor is None:
@@ -82,7 +81,7 @@ async def api_classificar_noticia(input_data: InputApi):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao classificar notícia: {str(e)}")
 
-# Endpoint para verificar se a API está funcionando
+
 @app.get("/")
 async def root():
     return {"status": "online", "message": "API de Classificação de Notícias Ambientais"}

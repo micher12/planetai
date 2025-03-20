@@ -329,7 +329,7 @@ irrelevantes = [
 
 # Gerar dados alternados
 dados = []
-for i in range(100):
+for i in range(1000):
     if i % 3 == 0:
         # Negativo (0)
         frase_template, tipos = random.choice(negativas)

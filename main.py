@@ -32,7 +32,7 @@ def main():
 
     if os.path.exists(model_path):
         checkpoint = torch.load(model_path)
-        print("INPUT DIM: ",checkpoint['input_dim'])
+
         model = ClassificadorNoticias(
             input_dim=checkpoint['input_dim'],
             hidden_dim=checkpoint['hidden_dim'],
@@ -53,7 +53,7 @@ def main():
     # Treinar
     train_loader, val_loader = preparar_dataloaders(features, labels)
     model, historico = treinar_modelo(
-        model, train_loader, val_loader, device, feature_extractor
+        model, train_loader, val_loader, device, epochs=16
     )
     
     # Avaliar
