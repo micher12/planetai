@@ -73,7 +73,6 @@ def fazer_previsao(texto, modelo, extrator, device='cuda'):
     return sentimentos[prediction], probs[0].cpu().numpy()
 
 def main():
-
     model, device = inicializarModelo()
 
     feature_extractor = BertFeatureExtractor()
@@ -82,9 +81,9 @@ def main():
         model,
         device,
         feature_extractor,
-        caminho_arquivo="gerar_dados/noticias.csv",
+        caminho_arquivo="gerar_dados/noticias3.csv",
         epochs=16,
-        batch_size=20,
+        batch_size=16,
         learning_rate=1e-5
     )
 

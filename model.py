@@ -3,7 +3,6 @@ from torch import nn
 from torch.nn import functional as F
 
 class AtencaoSeletiva(nn.Module):
-    """Mecanismo de atenção para focar em partes relevantes do texto"""
     def __init__(self, input_dim):
         super().__init__()
         self.attention = nn.Linear(input_dim, 1)
@@ -22,20 +21,19 @@ class ClassificadorNoticiasAvancado(nn.Module):
         super().__init__()
         self.use_attention = use_attention
         
+
         # Camadas convolucionais
         self.conv1 = nn.Conv1d(input_dim, hidden_dim, kernel_size=3, padding=1)
         self.conv2 = nn.Conv1d(input_dim, hidden_dim, kernel_size=5, padding=2)
         
-        # Mecanismo de atenção
  
         self.atencao = AtencaoSeletiva(input_dim)
         comb_dim = input_dim + hidden_dim * 2
        
-        
-        # Normalização
+
         self.layer_norm = nn.LayerNorm(comb_dim)
         
-        # Classificador com residual
+
         self.fc1 = nn.Linear(comb_dim, hidden_dim)
         self.bn1 = nn.BatchNorm1d(hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, hidden_dim//2)
@@ -43,7 +41,7 @@ class ClassificadorNoticiasAvancado(nn.Module):
         self.residual = nn.Linear(comb_dim, hidden_dim//2)
         self.output = nn.Linear(hidden_dim//2, n_classes)
         
-        # Regularização
+
         self.dropout = nn.Dropout(dropout)
         
     def forward(self, x, all_tokens=None, attention_mask=None):

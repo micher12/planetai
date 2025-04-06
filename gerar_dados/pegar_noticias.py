@@ -119,13 +119,13 @@ def process_news_GNEWS():
     if not apikey:
         raise ValueError("Chave de API não encontrada. Configure a variável de ambiente GNEWS_API_KEY.")
 
-    to_date = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    from_date = (datetime.now(timezone.utc) - timedelta(days=70)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    to_date = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    from_date = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
     
-    query = "desmatamento+AND+meio+ambiente" #meio+ambiente
+    query = "meio+ambiente" #meio+ambiente
 
-    #url = f"https://gnews.io/api/v4/search?q={query}&lang=pt&from={from_date}&to={to_date}&country=br&max=10&apikey={apikey}"
-    url = f"https://gnews.io/api/v4/search?q={query}&lang=pt&country=br&max=10&apikey={apikey}"
+    url = f"https://gnews.io/api/v4/search?q={query}&lang=pt&from={from_date}&to={to_date}&country=br&max=10&apikey={apikey}"
+    #url = f"https://gnews.io/api/v4/search?q={query}&lang=pt&country=br&max=10&apikey={apikey}"
 
     with urllib.request.urlopen(url) as response:
         data = json.loads(response.read().decode("utf-8"))
