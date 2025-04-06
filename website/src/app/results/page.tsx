@@ -1,0 +1,426 @@
+"use client"
+import Header from "@/components/Header";
+import { useEffect, useState } from "react";
+import Chart, { ChartConfiguration, ChartConfigurationCustomTypesPerDataset, scales } from 'chart.js/auto'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLink, faXmark } from "@fortawesome/free-solid-svg-icons";
+import BackToTop from "@/components/BackToTop";
+
+interface noticia {
+    id_noticia: number,
+    title_noticia: string,
+    description_noticia: string,
+    url_noticia: string,
+    class_noticia: string,
+    date_noticia: string
+}
+
+interface chartData {
+    irrelevante: number
+    negativa: number
+    positiva: number
+    total: number
+}
+
+interface top5 {
+    irrelevante: number
+    negativa: number
+    positiva: number
+    total: number,
+}
+
+interface popUp{
+    title: string,
+    description: string,
+    url: string,
+    class: string,
+    date: string,
+    current: boolean,
+}
+
+export default function Results(){
+
+    const [data, setData] = useState<noticia[] | null>(null);
+    const [quantidade, setQuantidade] = useState<chartData>({
+        irrelevante: 0,
+        negativa: 0,
+        positiva: 0,
+        total: 0
+    });
+    const [allData, setAllData] = useState<noticia[] | null>(null);
+    const [showAll, setShowAll] = useState(false);
+    const [openPopUp, setOpenPopUp] = useState<popUp | null>(null);
+    const [top5, setTop5] = useState<top5>({
+      irrelevante: 0,
+      negativa: 0,
+      positiva: 0,
+      total: 5,
+    });
+
+    const configChart1: ChartConfiguration = 
+    {
+      type: 'pie',
+      data: {
+      labels: [
+        "Positiva ("+((quantidade.positiva/quantidade.total)*100).toFixed(2)+"%)", 
+        "Negativa ("+((quantidade.negativa/quantidade.total)*100).toFixed(2)+"%)", 
+        "Irrelevante ("+((quantidade.irrelevante/quantidade.total)*100).toFixed(2)+"%)"],
+        datasets: [{
+            label: "Quantidade de notícias",
+            data: [quantidade.positiva, quantidade.negativa, quantidade.irrelevante],
+            backgroundColor: [
+              "rgba(75, 192, 92, 0.9)",  
+              "rgba(255, 99, 132, 0.9)",
+              "rgba(255, 205, 86, 0.9)" 
+            ],
+            borderColor: [
+              "rgb(75, 192, 92)",
+              "rgb(255, 99, 132)",
+              "rgb(255, 205, 86)"
+            ],
+            borderWidth: 2,
+            hoverOffset: 15
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Todas notícias',
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            color: '#ffffff',
+            padding: 20
+          },
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              color: "#ffffff",
+              padding: 15,
+              font: {
+                size: 12
+              }
+            }
+          },
+        }
+      }
+    }
+
+    const configChart2: ChartConfiguration = 
+    {
+      type: 'pie',
+      data: {  
+        labels: [
+          "Positiva ("+((top5.positiva/top5.total)*100).toFixed(2)+"%)", 
+          "Negativa ("+((top5.negativa/top5.total)*100).toFixed(2)+"%)", 
+          "Irrelevante ("+((top5.irrelevante/top5.total)*100).toFixed(2)+"%)"],
+      datasets: [{
+        label: "Grafico",
+        data: [top5.positiva, top5.negativa, top5.irrelevante],
+        backgroundColor: [
+          "rgba(75, 192, 92, 0.9)",  
+          "rgba(255, 99, 132, 0.9)", 
+          "rgba(255, 205, 86, 0.9)"  
+        ],
+        borderColor: [
+          "rgb(75, 192, 92)",
+          "rgb(255, 99, 132)",
+          "rgb(255, 205, 86)"
+        ],
+        borderWidth: 2,
+        hoverOffset: 15
+      }]
+      },
+      options:{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Notícias dos últimos 5 dias',
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            color: '#ffffff',
+            padding: 20
+          },
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+                color: "#ffffff",
+                padding: 15,
+                font: {
+                  size: 12
+                }
+            }
+          },
+        },
+      }
+    }
+
+    useEffect(()=>{
+        async function getdata(){
+            const thisData = await fetch('/api/getdata', {
+                method:"POST"
+            })
+            .then(res => res.json());
+
+            const noticias: noticia[] = thisData.last5;
+
+            const titles = new Set(noticias.map(n => n.title_noticia));
+            const description = new Set(noticias.map(n => n.description_noticia));
+
+            const preAllData: noticia[] = thisData.allData;
+            console.log(preAllData)
+
+            const newAllData = preAllData.filter((noticia)=>{
+                return (
+                    !titles.has(noticia.title_noticia) && 
+                    !description.has(noticia.description_noticia)
+                )
+            })
+
+            const resultado = thisData.result[0];
+
+            setData(noticias)
+            setQuantidade(resultado)
+            setAllData(newAllData)
+        }
+        getdata()
+
+    },[]);
+
+    useEffect(()=>{
+        if(data){
+            data.map((val)=>{
+                
+                if(val.class_noticia == "Positiva"){
+                    setTop5(prev => ({...prev, positiva: prev.positiva + 1}))
+                }
+
+                if(val.class_noticia == "Negativa"){
+                    setTop5(prev => ({...prev, negativa: prev.negativa + 1}))
+                }
+
+                if(val.class_noticia == "Irrelevante"){
+                    setTop5(prev => ({...prev, irrelevante: prev.irrelevante + 1}))
+                }
+            }) 
+
+            const chartElement = document.getElementById("acquisitions") as HTMLCanvasElement | null;
+            if (chartElement) {
+                const myChart = new Chart(chartElement, configChart1);
+
+                return () => {
+                    myChart.destroy();
+                }
+            }
+        }
+    },[data]);
+
+    useEffect(()=>{
+        const top5noticias = document.getElementById("top5noticias") as HTMLCanvasElement | null;
+        if (top5noticias) {
+            const myChar = new Chart(top5noticias, configChart2);
+
+            return () => {
+                myChar.destroy();
+            }
+        }
+    },[top5])
+
+
+    return(
+        <>
+        <Header />
+        <main className="min-h-screen bg-slate-900 text-white py-32">
+            <div className="container">
+                <h2 className="text-3xl font-bold">Histórico de Notícias: </h2>
+                {data &&
+                <>
+                    <div className="chart-container">
+                        <div className="chart-card">
+                            <canvas id="top5noticias"></canvas>
+                        </div>
+                        <div className="chart-card">
+                            <canvas id="acquisitions"></canvas>
+                        </div>
+                    </div>
+
+                    <div className="flex w-full flex-wrap justify-start gap-8 mt-10">
+
+                      {data.map((noticia, index) => {
+
+                        let text_color;
+                        let text_background;
+
+                        if(noticia.class_noticia === "Irrelevante"){
+                            text_color = "text-amber-100"
+                            text_background = "bg-amber-600"
+                        } else if(noticia.class_noticia === "Positiva"){
+                            text_color = "text-green-100"
+                            text_background = "bg-green-600"
+                        }else{
+                            text_color = "text-red-100"
+                            text_background = "bg-red-600"
+                        }
+
+                        return (
+                            <div
+                                onClick={()=>{setOpenPopUp({
+                                    title: noticia.title_noticia,
+                                    description: noticia.description_noticia,
+                                    url: noticia.url_noticia,
+                                    class: noticia.class_noticia,
+                                    date: noticia.date_noticia,
+                                    current: true
+                                })
+                                }}
+                                key={index}
+                                className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg"
+                            >
+                                <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
+                                    {noticia.title_noticia}
+                                </h2>
+
+                                <p className="text-sm text-gray-300 line-clamp-3">
+                                    {noticia.description_noticia}
+                                </p>
+
+                                <span className={`${text_color} ${text_background} w-fit text-xs font-bold px-3 py-1 rounded-full`}>
+                                    {noticia.class_noticia}
+                                </span>
+                                
+                            </div>
+                        )
+                      })}
+
+
+                      {(showAll && allData) &&
+                        <>
+                            <div className="w-full pt-0.5 bg-slate-600 rounded-xl"></div>
+                            <h2 className="w-full text-3xl font-bold">Restante das notícias</h2>
+
+                            {allData.map((noticia, index) => {
+                                
+                                let text_color;
+                                let text_background;
+
+                                if(noticia.class_noticia === "Irrelevante"){
+                                    text_color = "text-amber-100"
+                                    text_background = "bg-amber-600"
+                                } else if(noticia.class_noticia === "Positiva"){
+                                    text_color = "text-green-100"
+                                    text_background = "bg-green-600"
+                                }else{
+                                    text_color = "text-red-100"
+                                    text_background = "bg-red-600"
+                                }
+
+                                return (
+                                    <div
+                                        onClick={()=>{setOpenPopUp({
+                                            title: noticia.title_noticia,
+                                            description: noticia.description_noticia,
+                                            url: noticia.url_noticia,
+                                            class: noticia.class_noticia,
+                                            date: noticia.date_noticia,
+                                            current: true
+                                        })
+                                        }}
+                                        key={index}
+                                        className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg"
+                                    >
+                                        <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
+                                            {noticia.title_noticia}
+                                        </h2>
+
+                                        <p className="text-sm text-gray-300 line-clamp-3">
+                                            {noticia.description_noticia}
+                                        </p>
+
+                                        <span className={`${text_color} ${text_background} w-fit text-xs font-bold px-3 py-1 rounded-full`}>
+                                            {noticia.class_noticia}
+                                        </span>
+                                    </div>
+                                )
+                            })}
+                        </>
+                      }
+
+                    </div>
+
+                    {!showAll && 
+                      <div className="flex justify-center mt-4">
+                        <button
+                          className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mytransition hover:bg-blue-500 scale font-bold text-2xl mt-10"
+                          onClick={() => setShowAll(true)}
+                        >
+                            Visualizar todas as noticias
+                        </button>
+                      </div>
+                    }
+
+                </>
+                }
+            </div>
+        </main>
+        <BackToTop/>
+        {openPopUp &&
+            <>
+            <div className="openPopUp p-8 relative bg-slate-900 rounded-xl shadow-2xl border border-slate-700 max-w-xl w-full mx-auto text-slate-100">
+
+            <div 
+                onClick={() => {setOpenPopUp(null)}} 
+                className="absolute top-4 right-4 bg-slate-800 hover:bg-red-500 transition-colors duration-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
+            >
+                <FontAwesomeIcon icon={faXmark} className="text-lg" />
+            </div>
+            
+
+            <div className="mb-6 pb-4 border-b border-slate-700">
+                <h2 className="text-slate-100 text-2xl font-bold font-montserrat mb-2 max-w-[96%]">
+                {openPopUp.title}
+                </h2>
+                <div className="flex items-center gap-3">
+                    <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full bg-indigo-600 text-white`}>
+                        {openPopUp.class}
+                    </span>
+                    <span className="text-slate-200 text-sm">
+                        {new Date(openPopUp.date).toLocaleDateString("pt-BR")}
+                    </span>
+                </div>
+            </div>
+            
+
+            <div className="mb-8">
+                <p className="text-slate-300 font-montserrat leading-relaxed">
+                {openPopUp.description}
+                </p>
+            </div>
+
+            <div>
+                <a 
+                target="_blank" 
+                href={openPopUp.url}
+                className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors px-5 py-2 rounded-lg font-medium text-white"
+                >
+                Abrir notícia
+                <FontAwesomeIcon icon={faExternalLink} className="text-sm" />
+                </a>
+            </div>
+
+            </div>
+            <div className="popUpOverlay"></div>
+            </>
+        }
+        </>
+    )
+}
