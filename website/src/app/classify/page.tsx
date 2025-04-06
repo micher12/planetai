@@ -102,17 +102,17 @@ export default function Classify(){
         <Header />
         <main className="min-h-screen bg-slate-900 text-white py-32">
             <div className="container">
-                <h2 className="text-3xl font-bold">Classificador</h2>
+                <h2 className="text-3xl font-bold md:text-5xl fadeIn">Classificador de notícias</h2>
                 
                 {status && <h2 className={`${loading && "shiny-text"}`}>{status}</h2>}
 
-                <div onClick={classify} className="bg-blue-600 hover:bg-blue-500 w-fit font-bold text-xl rounded-lg px-6 py-1 mt-10 cursor-pointer scale mytransition">Começar!</div>
+                <div onClick={classify} className="bg-blue-600 hover:bg-blue-500 w-fit font-bold text-xl sm:text-2xl rounded-lg px-6 py-1 sm:px-12 sm:py-2 mt-10 cursor-pointer scale mytransition fadeIn">Classificar!</div>
 
                 {(loading && !noticias) && <Skeleton type="news" />}
                 {noticias &&
                     <>
-                    <h2 className="text-3xl font-bold w-full mt-10">Últimas notícias classificadas: </h2>
-                    <div className="flex w-full flex-wrap justify-start gap-8 mt-10">
+                    <h2 className="text-3xl font-bold w-full mt-12 sm:mt-18 fadeIn">Últimas notícias classificadas: </h2>
+                    <div className="flex w-full flex-wrap justify-start gap-8 mt-8">
                         {noticias.map((noticia,index)=>{
                             let text_color;
                             let text_background;
@@ -140,7 +140,8 @@ export default function Classify(){
                                     })
                                     }}
                                     key={index}
-                                    className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg"
+                                    style={{animationDuration: `${(index * 0.2)+1}s`}}
+                                    className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn"
                                 >
                                     <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
                                         {noticia.title}

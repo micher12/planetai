@@ -18,6 +18,8 @@ export default function Header() {
             const width = window.innerWidth;
             if(width <= 650){
                 setMobile(true);
+                monileIsOpen && openMenu();
+                setMobileIsOpen(false);
             }else{
                 setMobile(false);
             }
@@ -47,7 +49,7 @@ export default function Header() {
 
         if(id === "" && path === "/"){
             window.scrollTo({top: 0, behavior: "smooth"});
-            openMenu();
+            monileIsOpen && openMenu();
             return
         }else if(path !== "/"){
             window.location.href = "/";
@@ -58,7 +60,7 @@ export default function Header() {
 
         if(element){
             element.scrollIntoView({behavior: "smooth"});
-            openMenu();
+            monileIsOpen && openMenu();
         }
 
     }

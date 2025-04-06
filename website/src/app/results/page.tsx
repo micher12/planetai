@@ -54,7 +54,7 @@ export default function Results(){
       irrelevante: 0,
       negativa: 0,
       positiva: 0,
-      total: 5,
+      total: 0,
     });
 
     const configChart1: ChartConfiguration = 
@@ -178,7 +178,6 @@ export default function Results(){
             const description = new Set(noticias.map(n => n.description_noticia));
 
             const preAllData: noticia[] = thisData.allData;
-            console.log(preAllData)
 
             const newAllData = preAllData.filter((noticia)=>{
                 return (
@@ -198,7 +197,13 @@ export default function Results(){
     },[]);
 
     useEffect(()=>{
+        console.log(top5)
+    },[top5])
+
+    useEffect(()=>{
         if(data){
+            setTop5(prev=> ({...prev, total: data.length}));
+            
             data.map((val)=>{
                 
                 if(val.class_noticia == "Positiva"){
@@ -242,14 +247,14 @@ export default function Results(){
         <Header />
         <main className="min-h-screen bg-slate-900 text-white py-32">
             <div className="container">
-                <h2 className="text-3xl font-bold">Histórico de Notícias: </h2>
+                <h2 className="text-3xl font-bold fadeIn">Histórico de Notícias: </h2>
                 {data &&
                 <>
                     <div className="chart-container">
-                        <div className="chart-card">
+                        <div className="chart-card fadeIn">
                             <canvas id="top5noticias"></canvas>
                         </div>
-                        <div className="chart-card">
+                        <div className="chart-card fadeIn">
                             <canvas id="acquisitions"></canvas>
                         </div>
                     </div>
@@ -284,7 +289,8 @@ export default function Results(){
                                 })
                                 }}
                                 key={index}
-                                className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg"
+                                style={{animationDuration: `${(index * 0.12)+1}s`}}
+                                className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn"
                             >
                                 <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
                                     {noticia.title_noticia}
@@ -305,8 +311,8 @@ export default function Results(){
 
                       {(showAll && allData) &&
                         <>
-                            <div className="w-full pt-0.5 bg-slate-600 rounded-xl"></div>
-                            <h2 className="w-full text-3xl font-bold">Restante das notícias</h2>
+                            <div className="w-full pt-0.5 my-2 rounded-xl bg-gradient-to-r from-transparent via-slate-200/50 to-transparent"></div>
+                            <h2 className="w-full text-3xl font-bold fadeIn">Restante das notícias</h2>
 
                             {allData.map((noticia, index) => {
                                 
@@ -336,7 +342,8 @@ export default function Results(){
                                         })
                                         }}
                                         key={index}
-                                        className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg"
+                                        style={{animationDuration: `${(index * 0.1)+1}s`}}
+                                        className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn"
                                     >
                                         <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
                                             {noticia.title_noticia}
@@ -377,47 +384,47 @@ export default function Results(){
             <>
             <div className="openPopUp p-8 relative bg-slate-900 rounded-xl shadow-2xl border border-slate-700 max-w-xl w-full mx-auto text-slate-100">
 
-            <div 
-                onClick={() => {setOpenPopUp(null)}} 
-                className="absolute top-4 right-4 bg-slate-800 hover:bg-red-500 transition-colors duration-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
-            >
-                <FontAwesomeIcon icon={faXmark} className="text-lg" />
-            </div>
-            
-
-            <div className="mb-6 pb-4 border-b border-slate-700">
-                <h2 className="text-slate-100 text-2xl font-bold font-montserrat mb-2 max-w-[96%]">
-                {openPopUp.title}
-                </h2>
-                <div className="flex items-center gap-3">
-                    <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full bg-indigo-600 text-white`}>
-                        {openPopUp.class}
-                    </span>
-                    <span className="text-slate-200 text-sm">
-                        {new Date(openPopUp.date).toLocaleDateString("pt-BR")}
-                    </span>
-                </div>
-            </div>
-            
-
-            <div className="mb-8">
-                <p className="text-slate-300 font-montserrat leading-relaxed">
-                {openPopUp.description}
-                </p>
-            </div>
-
-            <div>
-                <a 
-                target="_blank" 
-                href={openPopUp.url}
-                className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors px-5 py-2 rounded-lg font-medium text-white"
+                <div 
+                    onClick={() => {setOpenPopUp(null)}} 
+                    className="absolute top-4 right-4 bg-slate-800 hover:bg-red-500 transition-colors duration-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
                 >
-                Abrir notícia
-                <FontAwesomeIcon icon={faExternalLink} className="text-sm" />
-                </a>
-            </div>
+                    <FontAwesomeIcon icon={faXmark} className="text-lg" />
+                </div>
+                
 
-            </div>
+                <div className="mb-6 pb-4 border-b border-slate-700">
+                    <h2 className="text-slate-100 text-2xl font-bold font-montserrat mb-2 max-w-[96%]">
+                    {openPopUp.title}
+                    </h2>
+                    <div className="flex items-center gap-3">
+                        <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full bg-indigo-600 text-white`}>
+                            {openPopUp.class}
+                        </span>
+                        <span className="text-slate-200 text-sm">
+                            {new Date(openPopUp.date).toLocaleDateString("pt-BR")}
+                        </span>
+                    </div>
+                </div>
+                
+
+                <div className="mb-8">
+                    <p className="text-slate-300 font-montserrat leading-relaxed">
+                        {openPopUp.description}
+                    </p>
+                </div>
+
+                <div>
+                    <a 
+                    target="_blank" 
+                    href={openPopUp.url}
+                    className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors px-5 py-2 rounded-lg font-medium text-white"
+                    >
+                    Abrir notícia
+                    <FontAwesomeIcon icon={faExternalLink} className="text-sm" />
+                    </a>
+                </div>
+
+                </div>
             <div className="popUpOverlay"></div>
             </>
         }
