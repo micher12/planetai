@@ -17,17 +17,10 @@ export default async function getdata(req: NextApiRequest, res: NextApiResponse)
 
     const connection = await getConnection();
 
-    const dataAtual = new Date();
-    const cincoDiasAtras = new Date();
-    cincoDiasAtras.setDate(dataAtual.getDate() - 5);
-
-    const dataFormatada = cincoDiasAtras.toISOString().split('T')[0];
-
     try{
 
         const [last5] = await connection.query(
-            'SELECT * FROM noticias WHERE `date_noticia` >= CURDATE() - INTERVAL 5 DAY ORDER BY date_noticia DESC',
-            [dataFormatada]
+            'SELECT * FROM noticias WHERE `date_noticia` >= CURDATE() - INTERVAL 5 DAY ORDER BY date_noticia DESC'
         );
 
         const [allData] = await connection.query(

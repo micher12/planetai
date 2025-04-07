@@ -197,27 +197,26 @@ export default function Results(){
     },[]);
 
     useEffect(()=>{
-        console.log(top5)
-    },[top5])
-
-    useEffect(()=>{
         if(data){
-            setTop5(prev=> ({...prev, total: data.length}));
+            const total = data.length
             
-            data.map((val)=>{
-                
-                if(val.class_noticia == "Positiva"){
-                    setTop5(prev => ({...prev, positiva: prev.positiva + 1}))
+            const contadores = data.reduce((acc, val) => {
+                if (val.class_noticia === "Positiva") {
+                  acc.positiva += 1;
+                } else if (val.class_noticia === "Negativa") {
+                  acc.negativa += 1;
+                } else if (val.class_noticia === "Irrelevante") {
+                  acc.irrelevante += 1;
                 }
+                return acc;
+            }, { positiva: 0, negativa: 0, irrelevante: 0 });
 
-                if(val.class_noticia == "Negativa"){
-                    setTop5(prev => ({...prev, negativa: prev.negativa + 1}))
-                }
-
-                if(val.class_noticia == "Irrelevante"){
-                    setTop5(prev => ({...prev, irrelevante: prev.irrelevante + 1}))
-                }
-            }) 
+            setTop5({
+                irrelevante: contadores.irrelevante,
+                negativa: contadores.negativa,
+                positiva: contadores.positiva,
+                total: total,
+            })
 
             const chartElement = document.getElementById("acquisitions") as HTMLCanvasElement | null;
             if (chartElement) {
@@ -425,7 +424,7 @@ export default function Results(){
                 </div>
 
                 </div>
-            <div className="popUpOverlay"></div>
+            <div className="popUpOverlay fadeIn-sm"></div>
             </>
         }
         </>

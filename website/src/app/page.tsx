@@ -26,10 +26,10 @@ export default function Home() {
   return(
     <>
       <Header />
-      <main className="min-h-screen text-white home relative z-10" style={{backgroundImage: !mobile ? "url('/background.jpg')" : "url('/backgroundMobile.jpg')", backgroundColor: "#030047"}}>
+      <main className="min-h-screen text-white home relative z-10" >
         <div className={`container-xl h-screen flex items-center justify-center`}>
 
-          <h2 className="text-5xl sm:text-6xl font-black font-montserrat text-center">Seja bem vindo a PlanetAI!</h2>
+          <h2 className="text-5xl sm:text-6xl font-black font-montserrat text-center fadeIn">Seja bem vindo a PlanetAI!</h2>
      
         </div>
       </main>
@@ -50,7 +50,7 @@ export default function Home() {
             </p>
             
 
-            <a href="/classify" className="inline-block bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-xl md:text-2xl uppercase px-12 py-3 rounded-lg mt-10 mytransition scale hover:shadow-lg">
+            <a href="/classify" className="inline-block bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-lg sm:text-xl md:text-2xl uppercase px-12 py-3 rounded-lg mt-10 mytransition scale hover:shadow-lg">
             Classificar
             </a>
             
@@ -61,7 +61,7 @@ export default function Home() {
             </p>
             
             
-            <a href="/results" className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-xl uppercase px-12 py-3 rounded-lg mt-8 mytransition scale hover:shadow-lg">
+            <a href="/results" className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-lg sm:text-xl uppercase px-12 py-3 rounded-lg mt-8 mytransition scale hover:shadow-lg">
             Ver Histórico Completo
             </a>
 

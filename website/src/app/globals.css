@@ -41,8 +41,10 @@ body {
   background-size: 200%;
   background-position: 50% 100%;
   filter: blur(10px);
-  animation: start 1.5s forwards;
+  animation: start 2s forwards;
   background-repeat: no-repeat;
+  background-image: url("/background.jpg");
+  background-color: #030047;
 }
 
 @keyframes start {
@@ -67,7 +69,7 @@ body {
     backdrop-filter: blur(0);
   }
   100%{
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
   }
 }
 
@@ -127,7 +129,7 @@ body {
     animation: fadeIn 1.4s ease forwards;
 }
 .fadeIn-sm{
-    animation: fadeIn .3s ease forwards;
+    animation: fadeIn .6s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -188,14 +190,14 @@ body {
     top: 0;
     left: 0;
     background: rgb(0 0 0 / .4);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
     z-index: 48;
 }
 @keyframes openPopUp {
     0%{
         opacity: 0;
         transform: translate(-50%, -70%);
-        filter: blur(10px)
+        filter: blur(16px)
     }
     100%{
         opacity: 1;
@@ -233,6 +235,11 @@ body {
     width: 100%;
     margin: 10px 0;
   }
+}
+@media screen and (max-width: 960px){
+    .home{
+        background-image: url("/backgroundMobile.jpg");
+    }
 }
 
 @media screen and (max-width: 860px){
