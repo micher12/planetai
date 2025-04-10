@@ -1,27 +1,18 @@
 "use client";
+import BackToTop from "@/components/BackToTop";
 import Header from "@/components/Header";
+import { motion, useInView } from "motion/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
 export default function Home() {
 
-  const [mobile, setMobile] = useState(false);
-
-  useEffect(()=>{
-    function resizing(){
-      const width = window.innerWidth
-      if(width <= 960){
-        setMobile(true);
-      }else{
-        setMobile(false);
-      }
-    }
-
-    resizing();
-
-    window.addEventListener('resize', resizing)
-    return () => window.removeEventListener('resize', resizing)
-  },[])
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const inView1 = useInView(ref1, {once: true, amount: 0.2});
+  const inView2 = useInView(ref2, {once: true, amount: 0.2});
+  const inView3 = useInView(ref3, {once: true, amount: 0.2});
 
   return(
     <>
@@ -33,40 +24,68 @@ export default function Home() {
      
         </div>
       </main>
-      <section id="sobre" className=" bg-slate-900 text-white py-12">
-        <div className="container">
-
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-slate-100">Sobre</h2>
-            <p className="text-lg md:text-xl mt-5 md:w-4/5 leading-relaxed text-slate-200">
-            A PlanetAI é uma inteligência artificial que utiliza análise de sentimento para identificar e classNameificar notícias relacionadas ao meio ambiente. A ferramenta avalia automaticamente o conteúdo das notícias e as categoriza em "Positiva", "Negativa" ou "Irrelevante", proporcionando aos usuários uma visão clara e objetiva sobre as tendências e impactos ambientais.
-            </p>
+      <section id="sobre" className="bg-slate-900 text-white py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
             
+            <motion.div 
+            initial={{opacity: 0, filter: "blur(10px)", y: 50}}
+            animate={ inView1 ? {opacity: 1, filter: "blur(0)", y: 0} : {opacity: 0, filter: "blur(10px)", y: 50} }
+            transition={{
+                duration: 0.6,
+            }}
+            ref={ref1}
+            className="bg-slate-800/70 backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-16">
+                <h2 className="text-4xl md:text-6xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-pink-600 flex items-center gap-3">Sobre a PlanetAI <Image src={"/planet.png"} width={50} height={50} alt="Logo" /></h2>
+                <p className="text-lg md:text-xl leading-relaxed text-slate-200">
+                    A <span className="text-rose-500 font-semibold">PlanetAI</span> é uma inteligência artificial desenvolvida para analisar o conteúdo de notícias relacionadas ao meio ambiente. A ferramenta avalia automaticamente cada notícia e a classifica como Positiva, Negativa ou Irrelevante, oferecendo ao usuário uma visão clara sobre os temas e acontecimentos que impactam o planeta.
+                </p>
+            </motion.div>
 
-            <div className="w-full pt-0.5 my-2 rounded-xl bg-gradient-to-r from-transparent via-slate-200/50 to-transparent my-16"></div>
-
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-slate-100">Como funciona?</h2>
-            <p className="text-lg md:text-xl mt-5 md:w-4/5 leading-relaxed text-slate-200">
-            Recuperamos as últimas notícias voltadas ao <span className="text-blue-500 font-semibold">Meio Ambiente</span>, a partir delas o modelo neural irá começar a analisar e com base em seu treinamento irá classNameificar se a notícia trata-se de um assunto <span className="text-blue-500 font-semibold">Positivo, Negativo ou Irrelevante</span> caso não seja voltado para o meio ambiente.
-            </p>
+            <div className="w-full h-[2px] rounded-full my-16 bg-gradient-to-r from-transparent via-slate-200/50 to-transparent"></div>
             
+            <motion.div 
+            initial={{opacity: 0, filter: "blur(10px)", y: 50}}
+            animate={ inView2 ? {opacity: 1, filter: "blur(0)", y: 0} : {opacity: 0, filter: "blur(10px)", y: 50} }
+            transition={{
+                duration: .6,
+            }}
+            ref={ref2}
+            className="bg-slate-800/70 backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-16">
+                <h2 className="text-4xl md:text-6xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-600">Como funciona?</h2>
+                <p className="text-lg md:text-xl leading-relaxed text-slate-200 mb-12">
+                    Buscamos as últimas notícias sobre o <span className="text-blue-400 font-semibold">meio ambiente.</span> A partir dessas informações, nosso sistema utiliza um modelo treinado para analisar o conteúdo e determinar se a notícia trata de algo positivo, negativo ou, caso não esteja relacionada ao tema ambiental, é considerada irrelevante.
+                </p>
+                <a href="/classify" className="block w-full sm:w-fit text-center sm:text-left bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-md sm:text-xl md:text-2xl uppercase px-6 sm:px-12 py-4 rounded-xl shadow-lg hover:shadow-rose-500/25 hover:scale-[1.02] mytransition">
+                    Classificar
+                </a>
 
-            <a href="/classify" className="inline-block bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-lg sm:text-xl md:text-2xl uppercase px-12 py-3 rounded-lg mt-10 mytransition scale hover:shadow-lg">
-            Classificar
-            </a>
-            
+            </motion.div>
 
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 mt-16 text-slate-100">Já classificados:</h2>
-            <p className="text-lg md:text-xl mt-5 md:w-4/5 leading-relaxed text-slate-200">
-            Explore nossa extensa base de dados de notícias ambientais já analisadas e categorizadas pela PlanetAI. Nosso histórico oferece insights valiosos sobre tendências ambientais globais e regionais, permitindo que você acompanhe a evolução das questões ambientais ao longo do tempo.
-            </p>
+            <div className="w-full h-[2px] my-16 bg-gradient-to-r from-transparent via-slate-200/50 to-transparent"></div>
             
-            
-            <a href="/results" className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-lg sm:text-xl uppercase px-12 py-3 rounded-lg mt-8 mytransition scale hover:shadow-lg">
-            Ver Histórico Completo
-            </a>
+            <motion.div 
+            initial={{opacity: 0, filter: "blur(10px)", y: 50}}
+            animate={ inView3 ? {opacity: 1, filter: "blur(0)", y: 0} : {opacity: 0, filter: "blur(10px)", y: 50} }
+            transition={{
+                duration: .6,
+            }}
+            ref={ref3}
+            className="bg-slate-800/70 rounded-2xl p-8 shadow-xl mb-16">
+                <h2 className="text-4xl md:text-6xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-600">Notícias já analisadas</h2>
+                <p className="text-lg md:text-xl leading-relaxed text-slate-200 mb-12">
+                    Acesse nossa base de dados com várias de notícias já avaliadas pela PlanetAI. Você poderá acompanhar como as questões ambientais têm evoluído ao longo do tempo, entendendo com mais clareza os acontecimentos que moldam o futuro do nosso planeta.
+                </p>
+                <a href="/results" className="block w-full text-center sm:text-left sm:w-fit bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-md sm:text-xl uppercase px-6 sm:px-12 py-4 rounded-lg shadow-lg hover:shadow-blue-500/25 hover:scale-[1.02] mytransition">
+                    Ver Histórico Completo
+                </a>
 
+            </motion.div>
+
+          </div>
         </div>
       </section>
+      <BackToTop />
     </>
   )
 }

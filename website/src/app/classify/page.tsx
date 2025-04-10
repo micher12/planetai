@@ -74,8 +74,8 @@ export default function Classify(){
             }
         });
 
-
         await sleep(3000)
+        
         setNoticias(preNoticiasnoticias)
 
         setStatus("Salvando dados...")
@@ -104,9 +104,9 @@ export default function Classify(){
             <div className="container">
                 <h2 className="text-3xl font-bold md:text-5xl fadeIn">Classificador de notícias</h2>
                 
-                {status && <h2 className={`${loading && "shiny-text"}`}>{status}</h2>}
+                {status && <h2 className={`${loading && "shiny-text"} mt-2 text-lg`}>{status}</h2>}
 
-                <div onClick={classify} className="bg-blue-600 hover:bg-blue-500 w-fit font-bold text-xl sm:text-2xl rounded-lg px-6 py-1 sm:px-12 sm:py-2 mt-10 cursor-pointer scale mytransition fadeIn">Classificar!</div>
+                <div onClick={classify} className="bg-blue-600 hover:bg-blue-500 w-fit font-bold text-xl sm:text-2xl rounded-lg px-6 py-1 sm:px-12 sm:py-2 mt-6 cursor-pointer scale mytransition fadeIn">Classificar!</div>
 
                 {(loading && !noticias) && <Skeleton type="news" />}
                 {noticias &&

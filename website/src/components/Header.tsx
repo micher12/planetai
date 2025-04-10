@@ -76,7 +76,7 @@ export default function Header() {
                         <div className={`flex flex-col sm:flex-row mytransition items-center ${!mobile ? "justify-between" : "justify-center"}`}>
                             {mobile ? 
                             <div onClick={openMenu} className="w-fit cursor-pointer text-slate-50 font-bold flex items-center gap-2 text-lg select-none">
-                                <Image src={"/planet.png"} width={30} height={30} alt="Logo PlanetAI" /> PlanetAI
+                                <Image src={"/planet.png"} width={40} height={40} alt="Logo PlanetAI" /> PlanetAI
                             </div>
                             :
                             <Link href={"/"} className="w-fit text-slate-50 font-bold flex items-center gap-2 text-lg"><Image  src={"/planet.png"} width={30} height={30} alt="Logo PlanetAI" /> PlanetAI</Link>

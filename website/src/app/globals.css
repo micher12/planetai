@@ -240,6 +240,9 @@ body {
     .home{
         background-image: url("/backgroundMobile.jpg");
     }
+    .container{
+        padding: 0 1.25rem;
+    }
 }
 
 @media screen and (max-width: 860px){
@@ -257,5 +260,19 @@ body {
     }
     .singleItem > p{
         font-size: 0.8rem !important;
+    }
+}
+
+
+/*ALTURA*/
+@media screen and (max-height: 860px){
+    .openPopUp{
+        height: calc(90% - 4rem);
+    }
+}
+
+@media screen and (max-height: 600px){
+    .openPopUp{
+        height: calc(85% - 4rem);
     }
 }
