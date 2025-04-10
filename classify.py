@@ -22,30 +22,40 @@ def classificar(text):
     return sentimento
 
 
+
+
 def pegar_noticias():
-    news = api.news_api(category="environment", country="br", language="pt")
+    page = None
 
     dados = []
 
-    artigos = news['results']
+    while True:
+        news = api.news_api(category="environment", country="br", language="pt", page=page)
 
-    for artigo in artigos:  # Limitando artigos
-        titulo = artigo['title']
-        link = artigo['link']
-        descricao = artigo['description']
-        data = artigo['pubDate']
+        artigos = news['results']
 
-        text = f"{titulo} {descricao}"
+        for artigo in artigos:  # Limitando artigos
+            titulo = artigo['title']
+            link = artigo['link']
+            descricao = artigo['description']
+            data = artigo['pubDate']
 
-        classificacao = classificar(text)
+            text = f"{titulo} {descricao}"
 
-        dados.append({
-            'title': titulo,
-            "description": descricao,
-            'url': link,
-            'class': classificacao,
-            'date': data,
-        })
+            classificacao = classificar(text)
+
+            dados.append({
+                'title': titulo,
+                "description": descricao,
+                'url': link,
+                'class': classificacao,
+                'date': data,
+            })
+
+        page = news.get('nextPage',None)
+
+        if not page:
+            break
 
     return dados
 
