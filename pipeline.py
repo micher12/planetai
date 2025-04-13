@@ -83,7 +83,7 @@ def main():
         feature_extractor,
         caminho_arquivo="gerar_dados/noticias2.csv",
         epochs=16,
-        batch_size=16,
+        batch_size=18,
         learning_rate=1e-5
     )
 
