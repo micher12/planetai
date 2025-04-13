@@ -73,8 +73,6 @@ export default function Classify(){
                 return res.noticias
             }
         });
-
-        await sleep(3000)
         
         setNoticias(preNoticiasnoticias)
 
