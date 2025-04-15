@@ -22,7 +22,7 @@ i = 0
 
 while True:
 
-    response = api.news_api(category="environment", country = "br", language="pt", page=page)
+    response = api.latest_api(category="environment", country = "br", language="pt", page=page)
 
     resultados = response['totalResults']
 

@@ -81,9 +81,9 @@ def main():
         model,
         device,
         feature_extractor,
-        caminho_arquivo="gerar_dados/noticias2.csv",
+        caminho_arquivo="gerar_dados/noticias3.csv",
         epochs=16,
-        batch_size=16,
+        batch_size=5,
         learning_rate=1e-5
     )
 
