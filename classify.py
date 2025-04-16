@@ -28,7 +28,7 @@ def pegar_noticias():
     dados = []
 
     while True:
-        news = api.news_api(q="meio ambiente", country="br", language="pt", page=page)
+        news = api.news_api(category="environment", country="br", language="pt", page=page)
 
         artigos = news['results']
 
