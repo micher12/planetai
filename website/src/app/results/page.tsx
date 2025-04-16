@@ -257,7 +257,7 @@ export default function Results(){
                             <canvas id="acquisitions"></canvas>
                         </div>
                     </div>
-
+                    <h2 className="mt-10 fadeIn text-lg font-semibold">Mostrando: {data.length} notícias dos últimos 5 dias:</h2>
                     <div className="flex w-full flex-wrap justify-start gap-8 mt-10">
 
                       {data.map((noticia, index) => {
@@ -311,7 +311,10 @@ export default function Results(){
                       {(showAll && allData) &&
                         <>
                             <div className="w-full pt-0.5 my-2 rounded-xl bg-gradient-to-r from-transparent via-slate-200/50 to-transparent"></div>
-                            <h2 className="w-full text-3xl font-bold fadeIn">Restante das notícias</h2>
+                            <div className="w-full fadeIn">
+                                <h2 className="text-3xl font-bold">Restante das notícias</h2>
+                                <h2 className="text-lg mt-1">Mostrando: {allData.length} Notícias restantes.</h2>
+                            </div>
 
                             {allData.map((noticia, index) => {
                                 

@@ -59,6 +59,8 @@ export default function Classify(){
 
         setLoading(true);
 
+        setNoticias(null);
+
         setStatus("Recuperando e classificando...")
 
       
