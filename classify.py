@@ -3,6 +3,7 @@ import os
 from newsdataapi import NewsDataApiClient
 from dotenv import load_dotenv
 from flask import Flask, jsonify
+from protocolo import getProtocolo
 
 
 model, _ = inicializarModelo()
@@ -60,9 +61,14 @@ def pegar_noticias():
 app = Flask(__name__)
 
 @app.route('/api/noticias', methods=['POST'])
-def response():
+def noticias_response():
     dados = pegar_noticias()
     return jsonify(dados)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/api/protocolo', methods=['POST'])
+def protocolo_response():
+    response = getProtocolo()
+    return response
+
+
+app.run(debug=True)
