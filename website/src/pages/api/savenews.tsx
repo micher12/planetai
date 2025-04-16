@@ -48,7 +48,6 @@ export default async function savenews(req: NextApiRequest, res: NextApiResponse
             !descriptionsExisting.has(noticia.description)
         );
 
-
         for (const noticiaItem of noticiasFiltradas) {
             await connection.query(
             'INSERT INTO `noticias` VALUES (?, ?, ?, ?, ?, ?)',
