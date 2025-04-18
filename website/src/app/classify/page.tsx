@@ -1,6 +1,8 @@
 "use client";
 
 import Alert from "@/components/Alert";
+import BackToTop from "@/components/BackToTop";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Skeleton from "@/components/Skeleton";
 import { faXmark, faExternalLink } from "@fortawesome/free-solid-svg-icons";
@@ -24,39 +26,12 @@ interface popUp{
     current: boolean,
 }
 
-interface protocolo {
-    analise_url: {
-        protocolo: string,
-        hostname: string,
-        caminho: string,
-        porta: number
-    }
-    resposta_api: {
-        status_http: number,
-        tipo_conteudo: string,
-        tamanho_conteudo: number,
-        tempo_resposta_segundos: number
-    },
-    analise_trafego: {
-        total_pacotes: number,
-        ips_origem: string[],
-        portas_origem: string[],
-        camada_3: [{
-            protocolo: string
-        }],
-        camada_4: [{
-            protocolo: string
-        }],
-    }
-}
-
-
 export default function Classify(){
 
     const [status, setStatus] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [noticias, setNoticias] = useState<noticia[] | null>(null);
-    const [protocolo, setProtocolo] = useState<protocolo | null>(null);
+    const [protocolo, setProtocolo] = useState<string[] | null>(null);
     const [type, setType] = useState<"sucesso" | "erro" | null>(null);
     const [message, setMessage] = useState<string>("");
     const [openPopUp, setOpenPopUp] = useState<popUp | null>(null);
@@ -82,27 +57,14 @@ export default function Classify(){
 
         setLoading(true);
         setNoticias(null);
-        setStatus("Carregando modelo...")
+        setStatus("Classificando notícias...")
 
         try {
-            let toggle = 0;
-            const phrases = [
-                "Recuperando notícias...",
-                "Classificando notícias...",
-                "Obtendo protocolos...",
-                "Finalizando..."
-            ];
-            const interval = setInterval(() => {
-                setStatus(phrases[toggle]);
-                toggle = toggle + 1;
-            }, 3000);
 
             const [preNoticiasnoticias, protocoloResponse] = await Promise.all([
                 fetch("/api/newsclassify",{method: "POST"}).then(res => res.json()),
                 fetch("/api/getprotocolo", {method: "POST",}).then(res => res.json()),
             ]);
-
-            clearInterval(interval);
 
             setStatus("Salvando dados...")
 
@@ -118,12 +80,12 @@ export default function Classify(){
 
             setType("sucesso")
             setMessage("Classificação realizada com sucesso!")
+            setStatus(null)
 
         } catch (error) {
             setType("erro")
             setMessage("Ocorreu um erro durante a classificação!")
         }finally{
-            setStatus(null)
             setLoading(false);
         }
 
@@ -148,61 +110,23 @@ export default function Classify(){
                     <div className="w-full mt-10 rounded-2xl bg-slate-900/80 p-6 sm:p-8 shadow-xl border-1 border-slate-700/50">
                         <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Análise de Protocolos de Rede</h2>
 
-                        <div className="mt-6 space-y-6 flex flex-col md:flex-row justify-between">
-                            <div>
-                                <h3 className="text-lg sm:text-xl font-semibold text-slate-200 mt-4">Análise URL</h3>
-                                <div className="pl-4 mt-2 space-y-3 border-l-2 border-slate-600">
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Hostname:</span> {protocolo.analise_url.hostname || 'Não disponível'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Protocolo:</span> {protocolo.analise_url.protocolo || 'Não disponível'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Porta:</span> {protocolo.analise_url.porta || 'Não disponível'}
-                                    </p>
-                                </div>
+                        <div className="mt-1 space-y-6 flex flex-col md:flex-row justify-between">
+      
+                            <div className="pl-4 mt-2 space-y-3 border-l-2 border-slate-600">
+                                <p className="text-sm sm:text-base text-slate-300">
+                                    <span className="font-medium">Protocolo:</span> {protocolo[0] || 'Não disponível'}
+                                </p>
+                                <p className="text-sm sm:text-base text-slate-300">
+                                    <span className="font-medium">Versão HTTP:</span> {protocolo[1] == "11" ? "HTTP/1.1" : " HTTP/2"}
+                                </p>
                             </div>
-
-                            <div>
-                                <h3 className="text-lg sm:text-xl font-semibold text-slate-200 mt-4">Resposta API</h3>
-                                <div className="pl-4 mt-2 space-y-2 border-l-2 border-slate-600">
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Tamanho:</span> {protocolo.resposta_api.tamanho_conteudo || '0'} bytes
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Tempo:</span> {protocolo.resposta_api.tempo_resposta_segundos || '0'} s
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Tipo:</span> {protocolo.resposta_api.tipo_conteudo || 'Não disponível'}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="text-lg sm:text-xl font-semibold text-slate-200 mt-4">Análise Tráfego</h3>
-                                <div className="pl-4 mt-2 space-y-2 border-l-2 border-slate-600">
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Pacotes:</span> {protocolo.analise_trafego.total_pacotes || '0'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">IP Origem:</span> {protocolo.analise_trafego.ips_origem[1] || 'Não disponível'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">IP Destino:</span> {protocolo.analise_trafego.ips_origem[0] || 'Não disponível'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Porta Destino:</span> {protocolo.analise_trafego.portas_origem[1] || 'Não disponível'}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-slate-300">
-                                        <span className="font-medium">Protocolo: </span> 
-                                        {protocolo.analise_trafego.camada_4[0].protocolo || 'N/A'}/{protocolo.analise_trafego.camada_3[0].protocolo || 'N/A'}
-                                    </p>
-                                </div>
-                            </div>
+                
                         </div>
                     </div>
-                    <h2 className="text-3xl font-bold w-full mt-5 fadeIn">Últimas notícias classificadas: </h2>
+                    <div className="w-full fadeIn mt-8">
+                        <h2 className="text-3xl font-bold">Últimas notícias classificadas: </h2>
+                        <h2 className="font-bold mt-1">{noticias.length} notícias encontradas</h2>
+                    </div>
                     <div className="flex w-full flex-wrap justify-start gap-8 mt-8">
                         {noticias.map((noticia,index)=>{
                             let text_color;
@@ -302,6 +226,8 @@ export default function Classify(){
             <div className="popUpOverlay"></div>
             </>
         }
+        <Footer />
+        <BackToTop />
         </>
     )
 }

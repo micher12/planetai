@@ -1,5 +1,6 @@
 "use client";
 import BackToTop from "@/components/BackToTop";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { motion, useInView } from "motion/react";
 import Image from "next/image";
@@ -24,7 +25,7 @@ export default function Home() {
      
         </div>
       </main>
-      <section id="sobre" className="bg-slate-900 text-white py-24">
+      <section id="sobre" className="bg-slate-900 text-white py-24 pb-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             
@@ -72,7 +73,7 @@ export default function Home() {
             }}
             ref={ref3}
             className="bg-slate-800/70 rounded-2xl p-8 shadow-xl mb-16">
-                <h2 className="text-4xl md:text-6xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-600">Notícias já analisadas</h2>
+                <h2 className="text-4xl md:text-6xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-600 py-1">Notícias já analisadas</h2>
                 <p className="text-lg md:text-xl leading-relaxed text-slate-200 mb-12">
                     Acesse nossa base de dados com várias de notícias já avaliadas pela PlanetAI. Você poderá acompanhar como as questões ambientais têm evoluído ao longo do tempo, entendendo com mais clareza os acontecimentos que moldam o futuro do nosso planeta.
                 </p>
@@ -85,6 +86,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
       <BackToTop />
     </>
   )

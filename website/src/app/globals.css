@@ -193,6 +193,10 @@ body {
     backdrop-filter: blur(16px);
     z-index: 48;
 }
+.categorias{
+    background-color: oklch(20.8% 0.042 265.755);
+}
+
 @keyframes openPopUp {
     0%{
         opacity: 0;

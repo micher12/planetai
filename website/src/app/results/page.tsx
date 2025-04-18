@@ -5,6 +5,7 @@ import Chart, { ChartConfiguration, ChartConfigurationCustomTypesPerDataset, sca
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLink, faXmark } from "@fortawesome/free-solid-svg-icons";
 import BackToTop from "@/components/BackToTop";
+import Footer from "@/components/Footer";
 
 interface noticia {
     id_noticia: number,
@@ -41,6 +42,7 @@ interface popUp{
 export default function Results(){
 
     const [data, setData] = useState<noticia[] | null>(null);
+    const [copyData, setCopyData] = useState<noticia[] | null>(null);
     const [quantidade, setQuantidade] = useState<chartData>({
         irrelevante: 0,
         negativa: 0,
@@ -48,6 +50,7 @@ export default function Results(){
         total: 0
     });
     const [allData, setAllData] = useState<noticia[] | null>(null);
+    const [copyallData, setCopyAllData] = useState<noticia[] | null>(null);
     const [showAll, setShowAll] = useState(false);
     const [openPopUp, setOpenPopUp] = useState<popUp | null>(null);
     const [top5, setTop5] = useState<top5>({
@@ -56,6 +59,8 @@ export default function Results(){
       positiva: 0,
       total: 0,
     });
+    const [search, setSearch] = useState<string>("");
+    const [categoria, setCategoria] = useState<string>("all");
 
     const configChart1: ChartConfiguration = 
     {
@@ -189,18 +194,20 @@ export default function Results(){
             const resultado = thisData.result[0];
 
             setData(noticias)
+            setCopyData(noticias)
             setQuantidade(resultado)
             setAllData(newAllData)
+            setCopyAllData(newAllData)
         }
         getdata()
 
     },[]);
 
     useEffect(()=>{
-        if(data){
-            const total = data.length
+        if(copyData){
+            const total = copyData.length
             
-            const contadores = data.reduce((acc, val) => {
+            const contadores = copyData.reduce((acc, val) => {
                 if (val.class_noticia === "Positiva") {
                   acc.positiva += 1;
                 } else if (val.class_noticia === "Negativa") {
@@ -227,7 +234,7 @@ export default function Results(){
                 }
             }
         }
-    },[data]);
+    },[copyData]);
 
     useEffect(()=>{
         const top5noticias = document.getElementById("top5noticias") as HTMLCanvasElement | null;
@@ -240,6 +247,49 @@ export default function Results(){
         }
     },[top5])
 
+    useEffect(() => {
+        if (data && allData) {
+            const normalizeText = (text: string) => {
+                return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            }
+
+            const normalizedSearch = normalizeText(search);
+
+            const filteredData = data.filter((noticia) => {
+                const matchesCategory = categoria === "all" || noticia.class_noticia === categoria;
+
+                const matchesSearch = normalizeText(noticia.title_noticia).includes(normalizedSearch) || 
+                                      normalizeText(noticia.description_noticia).includes(normalizedSearch);
+
+                return matchesCategory && matchesSearch;
+            });
+
+            const restante = allData.filter((noticia) => {
+                const matchesCategory = categoria === "all" || noticia.class_noticia === categoria;
+
+                const matchesSearch = normalizeText(noticia.title_noticia).includes(normalizedSearch) || 
+                                      normalizeText(noticia.description_noticia).includes(normalizedSearch);
+
+                return matchesCategory && matchesSearch;
+            });
+
+            setCopyData(filteredData);
+            setCopyAllData(restante);
+        }
+    }, [categoria, search]);
+
+    function changeCategory(e: React.ChangeEvent<HTMLSelectElement>) {
+        const el = e.target as HTMLSelectElement;
+
+        setCategoria(el.value);
+    }
+
+    function changeSearch(e: React.ChangeEvent<HTMLInputElement>){
+        const el = e.target as HTMLInputElement
+
+        setSearch(el.value)
+    }
+
 
     return(
         <>
@@ -247,7 +297,7 @@ export default function Results(){
         <main className="min-h-screen bg-slate-900 text-white py-32">
             <div className="container">
                 <h2 className="text-3xl font-bold fadeIn">Histórico de Notícias: </h2>
-                {data &&
+                {copyData &&
                 <>
                     <div className="chart-container">
                         <div className="chart-card fadeIn">
@@ -257,10 +307,25 @@ export default function Results(){
                             <canvas id="acquisitions"></canvas>
                         </div>
                     </div>
-                    <h2 className="mt-10 fadeIn text-lg font-semibold">Mostrando: {data.length} notícias dos últimos 5 dias:</h2>
+                    <div className="flex flex-col md:flex-row w-full fadeIn items-start gap-5 sm:justify-between md:items-center mt-10">
+                        <div className="flex flex-col gap-2">
+                            <h2 className="text-lg font-semibold">Mostrando: {copyData.length} notícias dos últimos 5 dias:</h2>
+                            <input onChange={changeSearch} placeholder="Queimadas" value={search} className="border rounded px-3 py-2" />
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <span>Filtrar por categorias:</span>
+                            <select onChange={changeCategory} className="border rounded px-3 py-1 categorias">
+                                <option value="all" >Todas</option>
+                                <option value="Positiva" >Positiva</option>
+                                <option value="Negativa" >Negativa</option>
+                                <option value="Irrelevante" >Irrelevante</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className="flex w-full flex-wrap justify-start gap-8 mt-10">
 
-                      {data.map((noticia, index) => {
+                      {copyData.map((noticia, index) => {
 
                         let text_color;
                         let text_background;
@@ -289,7 +354,7 @@ export default function Results(){
                                 }}
                                 key={index}
                                 style={{animationDuration: `${(index * 0.12)+1}s`}}
-                                className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn"
+                                className={`singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn`}
                             >
                                 <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
                                     {noticia.title_noticia}
@@ -308,15 +373,15 @@ export default function Results(){
                       })}
 
 
-                      {(showAll && allData) &&
+                      {(showAll && copyallData) &&
                         <>
                             <div className="w-full pt-0.5 my-2 rounded-xl bg-gradient-to-r from-transparent via-slate-200/50 to-transparent"></div>
                             <div className="w-full fadeIn">
                                 <h2 className="text-3xl font-bold">Restante das notícias</h2>
-                                <h2 className="text-lg mt-1">Mostrando: {allData.length} Notícias restantes.</h2>
+                                <h2 className="text-lg mt-1">Mostrando: {copyallData.length} Notícias restantes.</h2>
                             </div>
 
-                            {allData.map((noticia, index) => {
+                            {copyallData.map((noticia, index) => {
                                 
                                 let text_color;
                                 let text_background;
@@ -381,6 +446,7 @@ export default function Results(){
                 }
             </div>
         </main>
+        <Footer />
         <BackToTop/>
         {openPopUp &&
             <>
