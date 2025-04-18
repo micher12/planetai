@@ -10,7 +10,7 @@ def inicializarModelo():
     print(f"Usando dispositivo: {device}")
 
     # Inicializar modelo
-    
+
     model_path = "melhor_modelo_noticias.pth"
 
     # Criar diretório se necessário (se o caminho tiver subdiretórios)
@@ -83,7 +83,7 @@ def main():
         feature_extractor,
         caminho_arquivo="gerar_dados/noticias3.csv",
         epochs=16,
-        batch_size=5,
+        batch_size=16,
         learning_rate=1e-5
     )
 

@@ -67,8 +67,8 @@ def noticias_response():
 
 @app.route('/api/protocolo', methods=['POST'])
 def protocolo_response():
-    response = getProtocolo()
-    return response
+    protocolo, versao = getProtocolo()
+    return jsonify(protocolo, versao)
 
 
 app.run(debug=True)

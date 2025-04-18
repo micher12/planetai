@@ -50,14 +50,14 @@ while True:
 
         sentimentos = ['Negativa', 'Positiva', 'Irrelevante']
 
-        classify = sentimentos.index(resposta) if resposta in sentimentos else None
+        classe = sentimentos.index(resposta) if resposta in sentimentos else None
 
         dados = {
             'title': titulo,
             'date': data,
             'url': link,
             'content': descricao,
-            'class': classify
+            'class': classe
         }
 
         df = pd.DataFrame([dados])
@@ -69,9 +69,6 @@ while True:
             header=not os.path.exists("gerar_dados/noticias3.csv"),
             encoding='utf-8-sig'
         )
-
-    if resposta == "sair":
-        break
 
     page = response.get('nextPage',None)
 

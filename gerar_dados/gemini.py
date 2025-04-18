@@ -15,16 +15,17 @@ def classify(text):
 
 	messages = [
 		"role: user",
-		"content: Você é um classificador de noticias sobre o meio ambiente. Classifique-as como positiva, negativa ou irrelevante. 0 será negativa, 1 será positiva e 2 irrelevante. Apenas responda irrelevante se a noticias não tiver relação com o meio ambiente. Responda apenas com 0,1,2"
+		"content: Você é um classificador de noticias sobre o meio ambiente. Analise o contexto da noticia, pois o meio ambiente não envolve apenas a natureza. Classifique-as como positiva, negativa ou irrelevante. 0 será negativa, 1 será positiva e 2 irrelevante. Apenas responda irrelevante se a noticias não tiver nenhuma relação com o meio ambiente. Responda apenas com 0,1,2"
 
 		"role: assistant",
 		f"content: {text}"
 	]
 
 	response = client.models.generate_content(
-		model="gemini-2.0-flash",
+		model="gemini-2.0-flash-thinking-exp-01-21",
 		contents=messages,
 	)
 
 	return response.text
+
 
