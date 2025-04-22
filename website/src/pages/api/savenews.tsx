@@ -44,8 +44,10 @@ export default async function savenews(req: NextApiRequest, res: NextApiResponse
         const descriptionsExisting = new Set(noticiasExistentes.map(n => n.description_noticia));
 
         const noticiasFiltradas = noticias.filter(noticia => 
-            !titlesExisting.has(noticia.title) && 
-            !descriptionsExisting.has(noticia.description)
+                (noticia.title && noticia.description) &&
+                !titlesExisting.has(noticia.title) && 
+                !descriptionsExisting.has(noticia.description)
+         
         );
 
         for (const noticiaItem of noticiasFiltradas) {
