@@ -2,9 +2,9 @@ from pipeline import fazer_previsao, inicializarModelo, BertFeatureExtractor
 import os
 from newsdataapi import NewsDataApiClient
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 from protocolo import getProtocolo
-
+from functools import wraps
 
 model, _ = inicializarModelo()
 
@@ -60,15 +60,32 @@ def pegar_noticias():
 
 app = Flask(__name__)
 
+API_KEY = os.getenv("MY_API_KEY")
+
+def require_api_key(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header == f"Bearer {API_KEY}":
+            return f(*args, **kwargs)
+        else:
+            abort(401, description="Autorização Inválida.")
+    return decorated
+
 @app.route('/api/noticias', methods=['POST'])
+@require_api_key
 def noticias_response():
     dados = pegar_noticias()
     return jsonify(dados)
 
 @app.route('/api/protocolo', methods=['POST'])
+@require_api_key
 def protocolo_response():
     protocolo, versao = getProtocolo()
     return jsonify(protocolo, versao)
 
 
-app.run(debug=True)
+# app.rung(debug=True) # use para debugar
+
+
+app.run(host="0.0.0.0", port=5000, debug=False) # use para expor o ip da máquina, juntamente no ngrok para tornar uma api pública.
