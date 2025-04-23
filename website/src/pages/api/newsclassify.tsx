@@ -5,10 +5,15 @@ export default async function newsclassify(req: NextApiRequest, res: NextApiResp
     if(req.method !== "POST")
         return res.status(405).json({erro: "Método inválido!"})
 
-    const url = "http://127.0.0.1:5000/api/noticias"
+    const host_url = process.env.REQUEST_URL as string;
+
+    const url = `${host_url}/api/noticias`
 
     const noticias = await fetch(url, {
-        method: "POST"
+        method: "POST",
+        headers:{
+            "Authorization": `Bearer ${process.env.MY_API_KEY as string}`,
+        }
     }).then(data => data.json());
 
 
