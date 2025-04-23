@@ -70,8 +70,8 @@ export default function Header() {
         <>
         {!loading &&
             <>
-            <header className="w-full fixed top-0 left-0 expandHeader py-4 z-50">
-                <div className="container mytransition">
+            <header className="w-full fixed top-0 left-0 py-4 z-50">
+                <div className="container mytransition expandHeader">
                     <div className="w-full backdrop-blur bg-gradient-to-br from-slate-200/20 to-transparent  border border-slate-100/30 px-3 py-2 rounded-lg shadow-md">
                         <div className={`flex flex-col sm:flex-row mytransition items-center ${!mobile ? "justify-between" : "justify-center"}`}>
                             {mobile ? 
