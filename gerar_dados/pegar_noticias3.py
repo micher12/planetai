@@ -6,6 +6,9 @@ import math
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from pipeline import fazer_previsao, inicializarModelo, BertFeatureExtractor
+import torch
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 load_dotenv()
 apikey = os.getenv("NEWSDATA_API_KEY")
@@ -44,7 +47,7 @@ while True:
         print(f"Link: {link}")
         print(f"Data: {data}")
         
-        resposta, _ = fazer_previsao(text, model, feature_extractor)
+        resposta, _ = fazer_previsao(text, model, feature_extractor, device=device)
 
         print(f"\nResposta: {resposta}")
 

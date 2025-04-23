@@ -21,7 +21,10 @@ def inicializarModelo():
     if os.path.exists(model_path):
         print("\nInicializando modelo de classificação...")
         # Carregar o checkpoint do arquivo
-        checkpoint = torch.load(model_path)
+        if(device != 'cuda'):
+            checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
+        else:
+            checkpoint = torch.load(model_path)
 
         # Instanciar o modelo com os parâmetros de arquitetura
         model = ClassificadorNoticiasAvancado(
@@ -57,9 +60,14 @@ def fazer_previsao(texto, modelo, extrator, device='cuda'):
     features, masks = extrator.extract_features(texto, return_all_tokens=True)
     
     # Converter para tensor
-    features_cls = torch.tensor(features[:, 0, :]).float().to(device)
-    all_tokens = torch.tensor(features).float().to(device)
-    attn_mask = torch.tensor(masks).float().to(device)
+    if(device != "cuda"):
+        features_cls = torch.tensor(features[:, 0, :], dtype=torch.float32).to(device)
+        all_tokens = torch.tensor(features, dtype=torch.float32).to(device)
+        attn_mask = torch.tensor(masks, dtype=torch.float32).to(device)
+    else:
+        features_cls = torch.tensor(features[:, 0, :]).float().to(device)
+        all_tokens = torch.tensor(features).float().to(device)
+        attn_mask = torch.tensor(masks).float().to(device)
     
     # Fazer previsão
     modelo.eval()
@@ -88,7 +96,7 @@ def main():
     )
 
     texto_exemplo = "Desmatamento na Amazônia atinge maiores níveis em uma década, preocupando ambientalistas."
-    sentimento, probabilidades = fazer_previsao(texto_exemplo, model, feature_extractor)
+    sentimento, probabilidades = fazer_previsao(texto_exemplo, model, feature_extractor, device=device)
 
     print(f"Notícia: {texto_exemplo}")
     print(f"Sentimento: {sentimento}")

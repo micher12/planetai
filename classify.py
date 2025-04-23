@@ -4,7 +4,9 @@ from newsdataapi import NewsDataApiClient
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from protocolo import getProtocolo
+import torch
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model, _ = inicializarModelo()
 
@@ -18,7 +20,7 @@ api = NewsDataApiClient(apikey=apikey)
 
 def classificar(text):
 
-    sentimento, _ = fazer_previsao(text, model, feature_extractor)
+    sentimento, _ = fazer_previsao(text, model, feature_extractor, device=device)
 
     return sentimento
 
