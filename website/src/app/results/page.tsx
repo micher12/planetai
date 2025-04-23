@@ -36,11 +36,10 @@ interface popUp{
     url: string,
     class: string,
     date: string,
-    current: boolean,
 }
 
 export default function Results(){
-
+ 
     const [data, setData] = useState<noticia[] | null>(null);
     const [copyData, setCopyData] = useState<noticia[] | null>(null);
     const [quantidade, setQuantidade] = useState<chartData>({
@@ -200,7 +199,6 @@ export default function Results(){
             setCopyAllData(newAllData)
         }
         getdata()
-
     },[]);
 
     useEffect(()=>{
@@ -349,7 +347,7 @@ export default function Results(){
                                     url: noticia.url_noticia,
                                     class: noticia.class_noticia,
                                     date: noticia.date_noticia,
-                                    current: true
+
                                 })
                                 }}
                                 key={index}
@@ -405,7 +403,6 @@ export default function Results(){
                                             url: noticia.url_noticia,
                                             class: noticia.class_noticia,
                                             date: noticia.date_noticia,
-                                            current: true
                                         })
                                         }}
                                         key={index}
