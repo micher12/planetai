@@ -3,6 +3,7 @@ import os
 from newsdataapi import NewsDataApiClient
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, abort
+from functools import wraps
 from protocolo import getProtocolo
 import torch
 
