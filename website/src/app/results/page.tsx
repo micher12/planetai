@@ -351,7 +351,7 @@ export default function Results(){
                                 })
                                 }}
                                 key={index}
-                                style={{animationDuration: `${(index * 0.12)+1}s`}}
+                                style={{animationDuration: `${((index * 0.12)+1) > 8 ? 8 : ((index * 0.12)+1)}s`}}
                                 className={`singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn`}
                             >
                                 <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
@@ -406,7 +406,7 @@ export default function Results(){
                                         })
                                         }}
                                         key={index}
-                                        style={{animationDuration: `${(index * 0.1)+1}s`}}
+                                        style={{animationDuration: `${((index * 0.1)+1) > 8 ? 8 : ((index * 0.12)+1)}s`}}
                                         className="singleItem mytransition flex flex-col gap-3 p-5 bg-slate-800 rounded-xl text-white cursor-pointer scale border-slate-700 border hover:bg-slate-700 hover:border-slate-600 shadow-md hover:shadow-lg fadeIn"
                                     >
                                         <h2 className="text-lg font-semibold text-gray-100 hover:text-white line-clamp-4">
