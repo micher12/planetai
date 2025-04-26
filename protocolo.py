@@ -10,5 +10,6 @@ def getProtocolo():
 
     protocolo = ("TCP" if s.type == socket.SOCK_STREAM else "UDP")
 
+    s.close()
+
     return protocolo, versao
-    
