@@ -1,4 +1,4 @@
-from nlp import AutoTokenizer, BertFeatureExtractor
+from nlp import BertFeatureExtractor
 from model import ClassificadorNoticiasAvancado
 from train import treinar_modelo_completo
 import torch
@@ -46,14 +46,13 @@ def inicializarModelo():
             use_attention=True
         )
 
-    # Mover o modelo para o dispositivo (ex: CPU ou GPU)
+    # Mover o modelo para o dispositivo CPU ou GPU
     model = model.to(device)
 
     return model, device
 
 def fazer_previsao(texto, modelo, extrator, device='cuda'):
 
-    # Converter para lista (o extrator espera uma lista)
     texto = [texto]
     
     # Extrair features

@@ -48,7 +48,3 @@ class BertFeatureExtractor:
             return np.vstack(all_features), np.vstack(all_attention_masks)
         else:
             return np.vstack(all_features)
-
-def combinar_textos(df):
-    """Combina título e conteúdo de um DataFrame"""
-    return (df['title'] + ' ' + df['content']).tolist()
