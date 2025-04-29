@@ -4,9 +4,10 @@ from train import treinar_modelo_completo
 import torch
 import os
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def inicializarModelo():
     # Definir o dispositivo (GPU ou CPU)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Usando dispositivo: {device}")
 
     # Inicializar modelo
@@ -51,7 +52,7 @@ def inicializarModelo():
 
     return model, device
 
-def fazer_previsao(texto, modelo, extrator, device='cuda'):
+def fazer_previsao(texto, modelo, extrator, device=device):
 
     texto = [texto]
     
