@@ -12,12 +12,21 @@
 ### A partir de vários dados de treinamentos consegui como média 96,5% de acurácia.
 
 <p align="center">
-  <img width="35%" src="https://github.com/user-attachments/assets/c45cd53b-65f9-42dc-86c4-f047d10912e6" />
-  <img width="64%" src="https://github.com/user-attachments/assets/cbcc011d-0d1a-45d8-8d50-6ea9127a8515" />
+  <img width="35%" src="https://github.com/user-attachments/assets/406319e3-9d5d-4c6a-81b3-ef93af3a874b" />
+  <img width="64%" src="https://github.com/user-attachments/assets/040485b6-2fd3-49e0-9ded-0513c91ae021" />
 </p>
 
 <br/>
+<br/>
 
-# 💻 Website para tornar mais visível.
-
+# 💻 Website 
+### Tornar mais visível e acessível o acesso para a ferramenta
 <img src="https://github.com/user-attachments/assets/5c7ef2b2-e74a-487a-959a-9ec86042b753" />
+
+<br/>
+<br/>
+
+# 🤖 Classificação
+### A classificação realizada retorna para o usuário como negativa, positiva ou irrelevante
+<img src="https://github.com/user-attachments/assets/1f2d95ea-1a82-4882-aae4-1ec3bedfa772" />
+
